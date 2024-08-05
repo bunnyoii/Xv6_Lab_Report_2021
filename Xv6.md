@@ -14,7 +14,7 @@
 
 2. 检查WSL2要求：确认Windows版本是否符合要求。按下 Win+R 打开运行窗口，输入 "winver" 并检查 Windows 版本，确保版本号大于 1903。
 
-![](../OS课设/src/Tools-5.jpg)
+![](../Xv6_Lab_Report_2022/src/Tools-5.jpg)
 
 3. 启用虚拟化命令：
 
@@ -31,7 +31,7 @@ dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /nores
 - `/all` ：启用功能及其所有依赖项。
 - `/norestart` ：不在启用功能后立即重启计算机。    
 
-![](../OS课设/src/Tools-6.jpg)
+![](../Xv6_Lab_Report_2022/src/Tools-6.jpg)
 
 4. 下载X64的<u>WSL2 Linux内核升级包</u>并安装，将WSL的默认版本设置为WSL2：
 
@@ -41,7 +41,7 @@ dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /nores
 wsl --set-default-version 2
 ```
 
-![](../OS课设/src/Tools-7.jpg)
+![](../Xv6_Lab_Report_2022/src/Tools-7.jpg)
 
 5. 安装Ubuntu：
 
@@ -78,8 +78,8 @@ $ sudo apt-get install git build-essential gdb-multiarch qemu-system-misc
 gcc-riscv64-linux-gnu binutils-riscv64-linux-gnu
 ```
 
-![](../OS课设/src/Tools-1.jpg)
-![](../OS课设/src/Tools-2.jpg)
+![](../Xv6_Lab_Report_2022/src/Tools-1.jpg)
+![](../Xv6_Lab_Report_2022/src/Tools-2.jpg)
 
 #### 测试安装
 
@@ -87,13 +87,13 @@ gcc-riscv64-linux-gnu binutils-riscv64-linux-gnu
 $ qemu-system-riscv64 --version
 ```
 
-![](../OS课设/src/Tools-3.jpg)
+![](../Xv6_Lab_Report_2022/src/Tools-3.jpg)
 
 ```bash
 $ riscv64-linux-gnu-gcc --version
 ```
 
-![](../OS课设/src/Tools-4.jpg)
+![](../Xv6_Lab_Report_2022/src/Tools-4.jpg)
 
 #### 编译内核
 
@@ -110,7 +110,7 @@ $ sudo nano /etc/apt/sources.list
 $ sudo apt-get update
 ```
 
-![](../OS课设/src/Tools-8.jpg)
+![](../Xv6_Lab_Report_2022/src/Tools-8.jpg)
 
 ### Guidance
 
@@ -164,7 +164,7 @@ QEMU有一个“监视器”，可以让你查询仿真机器的状态。你可�
     Switched to a new branch 'util'
     ```
 
-![](../OS课设/src/Lab1-bootXv6-1.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab1-bootXv6-1.jpg)
 
 xv6-labs-2021 仓库与书中的 xv6-riscv 略有不同，主要是增加了一些文件。相关信息可以查看` git `日志：`$ git log`
 
@@ -194,18 +194,18 @@ hart 1 starting
 init: starting sh
 $ 
 ```
-![](../OS课设/src/Lab1-bootXv6-2.jpg)
-![](../OS课设/src/Lab1-bootXv6-3.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab1-bootXv6-2.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab1-bootXv6-3.jpg)
 
 如果在提示符下输入 `ls`，输出应类似于以下内容：
 
-![](../OS课设/src/Lab1-bootXv6-4.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab1-bootXv6-4.jpg)
 
 这些是 mkfs 在初始文件系统中包含的文件；大多数是可以运行的程序。刚才运行的其中一个程序是 `ls`。
 
 xv6 没有 `ps` 命令，但如果输入 `Ctrl-p`，内核将打印每个进程的信息。如果现在尝试，会看到两行输出：一行是 `init`，另一行是 `sh`。
 
-![](../OS课设/src/Lab1-bootXv6-5.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab1-bootXv6-5.jpg)
 
 要退出 qemu，请输入：`Ctrl-a x`。
 
@@ -262,7 +262,7 @@ xv6 没有 `ps` 命令，但如果输入 `Ctrl-p`，内核将打印每个进程�
 
     - 打开 Makefile：`$ vim Makefile`
     - 在 Makefile 中找到名为 `UPROGS` 的行，这是一个定义用户程序的变量。在 `UPROGS` 行中，添加 `sleep` 程序的目标名称：`$U/_sleep\`。
-    ![](../OS课设/src/Lab1-sleep-1.jpg)
+    ![](../Xv6_Lab_Report_2022/src/Lab1-sleep-1.jpg)
 
 4. 编译并测试程序
     
@@ -310,7 +310,7 @@ $
 
 如果程序在以下情况下暂停，则解决方案是正确的 如上所示运行。 运行以查看是否确实通过了 睡眠测试。
 
-![](../OS课设/src/Lab1-sleep-2.gif)
+![](../Xv6_Lab_Report_2022/src/Lab1-sleep-2.gif)
 
 #### 分析讨论
 
@@ -384,7 +384,7 @@ $
     }
     ```
 
-![](../OS课设/src/Lab1-pingpong-1.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab1-pingpong-1.jpg)
 
 2. 更新 `Makefile`：
 
@@ -408,8 +408,8 @@ $
 
 #### 实验结果
 
-![](../OS课设/src/Lab1-pingpong-2.jpg)
-![](../OS课设/src/Lab1-pingpong-3.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab1-pingpong-2.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab1-pingpong-3.jpg)
 
 此输出表明：
 
@@ -433,7 +433,7 @@ $
 
 2. 使用管道和 fork 来建立管道。第一个进程将数字 2 到 35 送入管道。对于每一个质数，应将安排创建一个进程，通过管道从左邻右舍读取数据，并通过另一个管道向右邻右舍写入数据。由于 xv6 的文件描述符和进程数量有限，第一个进程可以在 35 处停止。
 
-![](../OS课设/src/Lab1-primes-1.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab1-primes-1.jpg)
 
 #### 实验步骤
 
@@ -518,7 +518,7 @@ int main(int argc, char *argv[]) {
         - 新的子进程递归调用`filter`函数继续筛选下一个素数，直到管道中没有数可读。
 4. 添加到Makefile：将程序以`$U/_primes`的形式，添加到`Makefile`的`UPROGS`中。
 
-![](../OS课设/src/Lab1-primes-2.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab1-primes-2.jpg)
 
 #### 实验结果
 ```bash
@@ -539,8 +539,8 @@ prime 29
 prime 31
 $
 ```
-![](../OS课设/src/Lab1-primes-3.jpg)
-![](../OS课设/src/Lab1-primes-4.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab1-primes-3.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab1-primes-4.jpg)
 
 #### 分析讨论
 
@@ -664,7 +664,7 @@ $
     }
     ```
 
-![](../OS课设/src/Lab1-find-1.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab1-find-1.jpg)
 
     - fmtname函数：
         - 功能：从路径中提取文件名。它通过查找路径中最后一个斜杠后的部分来获取文件名。
@@ -704,8 +704,8 @@ $ find . b
 ./a/b
 $ 
 ```
-![](../OS课设/src/Lab1-find-2.jpg)
-![](../OS课设/src/Lab1-find-3.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab1-find-2.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab1-find-3.jpg)
 
 程序输出符合预期，成功查找到目标文件并打印其路径。
 
@@ -812,7 +812,7 @@ if (strlen(path) + 1 + DIRSIZ + 1 > sizeof(buf)) {
     }
     ```
 
-![](../OS课设/src/Lab1-xargs-1.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab1-xargs-1.jpg)
 
 3. 修改 Makefile：在 Makefile 的 UPROGS 中添加 $U/_xargs。
 
@@ -831,9 +831,9 @@ if (strlen(path) + 1 + DIRSIZ + 1 > sizeof(buf)) {
     ```
     实际输出：
 
-    ![](../OS课设/src/Lab1-xargs-2.jpg)
+    ![](../Xv6_Lab_Report_2022/src/Lab1-xargs-2.jpg)
 2. 运行 `./grade-lab-util xargs`：
-![](../OS课设/src/Lab1-xargs-3.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab1-xargs-3.jpg)
 
 
 #### 分析讨论
@@ -896,7 +896,7 @@ if (strlen(path) + 1 + DIRSIZ + 1 > sizeof(buf)) {
    ```c
    #define SYS_trace  22
    ```
-   ![](../OS课设/src/Lab2-system_call_tracking-4.jpg)
+   ![](../Xv6_Lab_Report_2022/src/Lab2-system_call_tracking-4.jpg)
 2. 官方已提供了用户态的 `trace` 函数（ `user/trace.c` ），因此我们只需在 `user/user.h` 文件中声明用户态可以调用 `trace` 系统调用。然而，关于该系统调用的参数和返回值的类型，我们需要进一步确认。
 
     为了明确这些类型，我们需要查看 `trace.c` 文件。文件中有一句代码 `trace(atoi(argv[1])) < 0` ，显示 `trace` 函数传入的是一个数字，并且与 0 进行比较。结合实验提示，可以确定传入参数的类型为 `int`，并且推测返回值类型也是 `int`。
@@ -907,13 +907,13 @@ if (strlen(path) + 1 + DIRSIZ + 1 > sizeof(buf)) {
     // system calls
     int trace(int);
     ```
-    ![](../OS课设/src/Lab2-system_call_tracking-2.jpg)
+    ![](../Xv6_Lab_Report_2022/src/Lab2-system_call_tracking-2.jpg)
 3. 接下来，我们需要查看 `user/usys.pl` 文件。该文件中使用 Perl 语言自动生成用户态系统调用接口的汇编语言文件 `usys.S`。因此，我们需要在 `user/usys.pl` 文件中加入以下语句：
 
     ```perl
     entry("trace");
     ```
-    ![](../OS课设/src/Lab2-system_call_tracking-3.jpg)
+    ![](../Xv6_Lab_Report_2022/src/Lab2-system_call_tracking-3.jpg)
 4. 执行 `ecall` 指令后会跳转至 `kernel/syscall.c` 文件中的 `syscall` 函数处，并执行该函数。`syscall` 函数的源码如下：
    
    ```c
@@ -949,7 +949,7 @@ if (strlen(path) + 1 + DIRSIZ + 1 > sizeof(buf)) {
         int tracemask;               // Mask
     };
    ```
-   ![](../OS课设/src/Lab2-system_call_tracking-8.jpg)
+   ![](../Xv6_Lab_Report_2022/src/Lab2-system_call_tracking-8.jpg)
 8. 然后可以在 `kernel/sysproc.c` 给出 `sys_trace` 函数的具体实现了，只要把传进来的参数给到现有进程的 `mask` 即可：
     ```c
     uint64
@@ -965,7 +965,7 @@ if (strlen(path) + 1 + DIRSIZ + 1 > sizeof(buf)) {
         return 0;
     }
     ```
-    ![](../OS课设/src/Lab2-system_call_tracking-5.jpg)
+    ![](../Xv6_Lab_Report_2022/src/Lab2-system_call_tracking-5.jpg)
 9. 接下来，我们需要实现输出功能。由于 RISCV 的 C 规范是将返回值放在 a0 寄存器中，所以在调用系统调用时，我们只需判断是否为 mask 规定的输出函数，如果是，就进行输出操作。首先，在 `kernel/proc.h` 文件中，`proc` 结构体中的 `name` 字段是线程的名字，不是函数调用的函数名称。因此，我们需要在 `kernel/syscall.c` 中定义一个数组来存储系统调用的名字。这里需要注意，系统调用的名字必须按顺序排列，第一个为空字符串。当然，也可以去掉第一个空字符串，但在取值时需要将索引减一，因为系统调用号是从 1 开始的。
 
     ```c
@@ -996,7 +996,7 @@ if (strlen(path) + 1 + DIRSIZ + 1 > sizeof(buf)) {
         }
     }
     ```
-    ![](../OS课设/src/Lab2-system_call_tracking-6.jpg)
+    ![](../Xv6_Lab_Report_2022/src/Lab2-system_call_tracking-6.jpg)
 11. 然后在 `kernel/proc.c` 中 `fork` 函数调用时，添加子进程复制父进程的 `mask` 的代码：
 
     ```c
@@ -1009,9 +1009,9 @@ if (strlen(path) + 1 + DIRSIZ + 1 > sizeof(buf)) {
     np->trapframe->a0 = 0;
     ...
     ```
-    ![](../OS课设/src/Lab2-system_call_tracking-7.jpg)
+    ![](../Xv6_Lab_Report_2022/src/Lab2-system_call_tracking-7.jpg)
 12. 最后在 `Makefile` 的 `UPROGS` 中添加 `$U/_trace\` 。
-    ![](../OS课设/src/Lab2-system_call_tracking-1.jpg)
+    ![](../Xv6_Lab_Report_2022/src/Lab2-system_call_tracking-1.jpg)
 13. 结果验证。
 
 #### 实验结果
@@ -1038,10 +1038,10 @@ $
 $ trace 2 usertests forkforkfork
 usertests starting
 ```
-![](../OS课设/src/Lab2-system_call_tracking-9.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab2-system_call_tracking-9.jpg)
 
 `./grade-lab-syscall trace`
-![](../OS课设/src/Lab2-system_call_tracking-10.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab2-system_call_tracking-10.jpg)
 
 #### 分析讨论
 
@@ -1098,7 +1098,7 @@ usertests starting
     "open", "write", "mknod", "unlink", "link", 
     "mkdir", "close", "trace", "sysinfo"};
    ```
-   ![](../OS课设/src/Lab2-sysinfo-1.jpg)
+   ![](../Xv6_Lab_Report_2022/src/Lab2-sysinfo-1.jpg)
 6. 在进程中已经保存了当前进程的状态，因此我们可以直接遍历所有进程，判断它们的状态是否为 UNUSED 并进行计数。根据 proc 结构体的定义，访问进程状态时必须加锁。我们在 kernel/proc.c 中新增了一个名为 nproc 的函数，用于获取可用进程的数量，代码如下：
     ```c
     uint64
@@ -1123,7 +1123,7 @@ usertests starting
         return num;
     }
     ```
-    ![](../OS课设/src/Lab2-sysinfo-3.jpg)
+    ![](../Xv6_Lab_Report_2022/src/Lab2-sysinfo-3.jpg)
 7. 在 `kernel/kalloc.c` 中添加一个 `free_mem` 函数，用于收集可用内存的数量。参考 `kernel/kalloc.c` 文件中的 `kalloc()` 和 `kfree()` 函数可以看出，内核通过 `kmem.freelist` 链表维护未使用的内存。链表的每个节点对应一个页表大小（PGSIZE）。分配内存时，从链表头部取走一个页表大小的内存；释放内存时，使用头插法将其插入到该链表。因此，计算未使用内存的字节数 `freemem` 只需遍历该链表，得到链表节点数，并与页表大小（4KB）相乘即可。
 
     ```c
@@ -1144,7 +1144,7 @@ usertests starting
         }
 
     ```
-    ![](../OS课设/src/Lab2-sysinfo-2.jpg)
+    ![](../Xv6_Lab_Report_2022/src/Lab2-sysinfo-2.jpg)
 8. 在 kernel/defs.h 中添加上述两个新增函数的声明：
     ```c
     // kalloc.c
@@ -1178,7 +1178,7 @@ usertests starting
         return 0;
         }
     ```
-    ![](../OS课设/src/Lab2-sysinfo-4.jpg)
+    ![](../Xv6_Lab_Report_2022/src/Lab2-sysinfo-4.jpg)
 10. 最后在 `user` 目录下添加一个 `sysinfo.c` 用户程序：
     ```c
     #include "kernel/param.h"
@@ -1201,7 +1201,7 @@ usertests starting
         exit(0);
     }
     ```
-    ![](../OS课设/src/Lab2-sysinfo-5.jpg)
+    ![](../Xv6_Lab_Report_2022/src/Lab2-sysinfo-5.jpg)
 11. 在 `Makefile` 的 `UPROGS` 中添加：
     ```bash
     $U/_sysinfotest\
@@ -1221,12 +1221,12 @@ $ sysinfotest
 sysinfotest: start
 sysinfotest: OK
 ```
-![](../OS课设/src/Lab2-sysinfo-6.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab2-sysinfo-6.jpg)
 
 ```bash
 ./grade-lab-syscall sysinfo
 ```
-![](../OS课设/src/Lab2-sysinfo-7.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab2-sysinfo-7.jpg)
 
 #### 分析讨论
 
@@ -1277,7 +1277,7 @@ $ make clean
     struct usyscall *usyscall;
     ...
     ```
-    ![](../OS课设/src/Lab3-speed_up_system_calls-1.jpg)
+    ![](../Xv6_Lab_Report_2022/src/Lab3-speed_up_system_calls-1.jpg)
 2. 配成功后，将当前进程的 pid 存入 usyscall 页面的开始处：
 
     ```c
@@ -1288,7 +1288,7 @@ $ make clean
     }
     p->usyscall->pid =  p->pid ; 
     ```
-    ![](../OS课设/src/Lab3-speed_up_system_calls-2.jpg)
+    ![](../Xv6_Lab_Report_2022/src/Lab3-speed_up_system_calls-2.jpg)
 3. `kalloc` 函数用于分配物理内存，但我们还需要完成从虚拟地址到物理地址的映射。这一过程需要在 `kernel/proc.c` 文件中的 `proc_pagetable()` 函数中利用 `mappages()` 函数来实现。`proc_pagetable()` 函数用于为进程创建一个用户页表。用户页表用于映射用户进程的虚拟地址到物理地址。在此过程中，还会映射一些特殊页，如 `trampoline` 和 `trapframe`。我们需要在这个函数中添加一个 `usyscall` 页面的映射。
 
     ```c
@@ -1298,7 +1298,7 @@ $ make clean
         return 0;
     }
     ```
-    ![](../OS课设/src/Lab3-speed_up_system_calls-3.jpg)
+    ![](../Xv6_Lab_Report_2022/src/Lab3-speed_up_system_calls-3.jpg)
 4. 当前已完成了分配和映射工作，按照提示，我们还需要在必要的时候释放页面，比如终止进程时，我们需要在 `kernel/proc.c` 的 `freeproc()` 函数中，同理，将我们分配的 `usyscall` 和 `trapframe` 页面做相同处理，添加相关代码：
 
     ```c
@@ -1306,7 +1306,7 @@ $ make clean
         kfree((void*)p->usyscall);
     p->usyscall = 0;
     ```
-    ![](../OS课设/src/Lab3-speed_up_system_calls-4.jpg)
+    ![](../Xv6_Lab_Report_2022/src/Lab3-speed_up_system_calls-4.jpg)
 5. 还需要在 `kernel/proc.c` 的 `proc_freepagetable()` 函数中释放我们之前建立的虚拟地址到物理地址的映射:
 
     ```c
@@ -1318,7 +1318,7 @@ $ make clean
         uvmfree(pagetable, sz);
     }
     ```
-    ![](../OS课设/src/Lab3-speed_up_system_calls-5.jpg)
+    ![](../Xv6_Lab_Report_2022/src/Lab3-speed_up_system_calls-5.jpg)
 #### 实验结果
 
 ```bash
@@ -1326,11 +1326,11 @@ $ pgtbltest
 ugetpid_test starting
 ugetpid_test: OK
 ```
-![](../OS课设/src/Lab3-speed_up_system_calls-6.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab3-speed_up_system_calls-6.jpg)
 ```bash
 ./grade-lab-pgtbl ugetpid
 ```
-![](../OS课设/src/Lab3-speed_up_system_calls-7.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab3-speed_up_system_calls-7.jpg)
 
 #### 分析讨论
 
@@ -1398,17 +1398,17 @@ ugetpid_test: OK
         }
     }
     ```
-    ![](../OS课设/src/Lab3-print_page_table-1.jpg)
+    ![](../Xv6_Lab_Report_2022/src/Lab3-print_page_table-1.jpg)
 2. 在 `kernel/defs.h` 文件中添加函数原型
-    ![](../OS课设/src/Lab3-print_page_table-2.jpg)
+    ![](../Xv6_Lab_Report_2022/src/Lab3-print_page_table-2.jpg)
 4. 在 `kernel/exec.c` 的 `exec` 函数的 `return argc` 前插入 `if(p->pid==1) vmprint(p->pagetable)` 。这里考虑 `xv6` 的启动过程, 推测 `pid==1` 的进程为 `kernel/main.c` 中 `main()` 函数中调用的 `userinit()` 函数所建立的控制台进程。
-    ![](../OS课设/src/Lab3-print_page_table-3.jpg)
+    ![](../Xv6_Lab_Report_2022/src/Lab3-print_page_table-3.jpg)
 5. 编译。
 
 #### 实验结果
 
-![](../OS课设/src/Lab3-print_page_table-5.jpg)
-![](../OS课设/src/Lab3-print_page_table-4.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab3-print_page_table-5.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab3-print_page_table-4.jpg)
 #### 分析讨论
 1. 在本实验中，我们编写了一个函数 `vmprint()`，以便打印 `RISC-V` 页表的内容。通过在 `exec.c` 文件中的适当位置调用该函数，可以有效地输出第一个用户进程（控制台进程）的页表信息，从而帮助我们可视化页表的结构和内容。
     - 函数实现：在 `vmprint()` 函数中，我们通过三重循环遍历三级页目录，每一层页目录都使用 `PTE_V` 位判断页表条目是否有效。当发现有效条目时，我们会递归进入下一层页目录，直到到达最低级页目录。对于最低级页目录中的每个有效条目，我们会输出对应的物理地址。
@@ -1439,7 +1439,7 @@ ugetpid_test: OK
     #define PTE_U  (1L << 4)  // user can access
     #define PTE_A  (1L << 6)  // accessed
     ```
-    ![](../OS课设/src/Lab3-detect-1.jpg)
+    ![](../Xv6_Lab_Report_2022/src/Lab3-detect-1.jpg)
 2. 实现 `sys_pgaccess` 系统调用
 实现 `sys_pgaccess`，其接收三个参数，分别为：1. 起始虚拟地址；2. 遍历页数目；3. 用户存储返回结果的地址。因为其是系统调用，故参数的传递需要通过 `argaddr`、`argint` 来完成。通过不断的 `walk` 来获取连续的 `PTE`，然后检查其 `PTE_A` 位，如果为 `1` 则记录在 `mask` 中，随后将 `PTE_A` 手动清 `0`。最后，通过 `copyout` 将结果拷贝给用户即可。在 `kernel/sysproc.c` 文件中，添加以下代码以实现 `sys_pgaccess` 系统调用：
     ```c
@@ -1467,12 +1467,12 @@ ugetpid_test: OK
         return 0;
     }
     ```
-    ![](../OS课设/src/Lab3-detect-2.jpg)
+    ![](../Xv6_Lab_Report_2022/src/Lab3-detect-2.jpg)
 3. 内核启动与输出验证
 4. 编写并运行测试用例
 5. 验证测试结果
 
-![](../OS课设/src/Lab3-detect-2.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab3-detect-2.jpg)
 
 #### 实验结果
 
@@ -1485,7 +1485,7 @@ page table 0x0000000087f6e000
 0: pte 0x000000021fdac1f pa 0x0000000087f6b000
 ...
 ```
-![](../OS课设/src/Lab3-detect-3.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab3-detect-3.jpg)
 ```plaintext
 $ pgtbltest
 ugetpid_test starting
@@ -1494,9 +1494,9 @@ pgaccess_test starting
 pgaccess_test: OK
 pgtbltest: all tests succeeded
 ```
-![](../OS课设/src/Lab3-detect-4.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab3-detect-4.jpg)
 
-![](../OS课设/src/Lab3-detect-5.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab3-detect-5.jpg)
 
 #### 分析讨论
 
@@ -1532,7 +1532,7 @@ make clean
 
 1. 在xv6的命令行中输入运行`make fs.img` ，编译`user/call.c`程序，得到可读性比较强的
 `user/call.asm`文件。
-![](../OS课设/src/Lab4-RISC_V-1.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab4-RISC_V-1.jpg)
 
 2. 阅读 call.asm 中的 g ， f ，和 main 函数。（参考这些材料：reference page。）
 回答下列问题：
@@ -1552,7 +1552,7 @@ printf("%d %d\n", f(8)+1, 13);
 ```
 通过汇编代码可以看到参数的传递：
 
-![](../OS课设/src/Lab4-RISC_V-2.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab4-RISC_V-2.jpg)
 
 在这段代码中：
 
@@ -1578,11 +1578,11 @@ printf("%d %d\n", f(8)+1, 13);
 
 查看 `call.asm` 文件中的 `f` 和 `g` 函数可知，函数  `f` 调用函数 `g` ；函数 `g` 使传入的参数加 3 后返回。
 
-![](../OS课设/src/Lab4-RISC_V-3.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab4-RISC_V-3.jpg)
 
 此外，编译器会进行内联优化，即在编译时计算出可以预先计算的结果，而不是在运行时进行函数调用。在 `main` 函数中，`printf` 包含一个对 `f` 的调用，但在汇编代码中，这个调用被直接替换为 `f(8)+1` 的结果 `12`。
 
-![](../OS课设/src/Lab4-RISC_V-4.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab4-RISC_V-4.jpg)
 
 综上，在 `main` 函数中没有直接的函数调用指令，而是内联了 `f` 和 `g` 的计算结果。
 
@@ -1592,7 +1592,7 @@ printf("%d %d\n", f(8)+1, 13);
 
 > `printf` 函数位于哪个地址？
 
-![](../OS课设/src/Lab4-RISC_V-5.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab4-RISC_V-5.jpg)
 
 查阅得到其地址在 `0x630` 。
 
@@ -1602,7 +1602,7 @@ printf("%d %d\n", f(8)+1, 13);
 
 > 在 `main` 中 `printf` 的 `jalr` 之后的寄存器 `ra` 中有什么值？
 
-![](../OS课设/src/Lab4-RISC_V-6.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab4-RISC_V-6.jpg)
 
 `34: jalr 1536(ra) # 630 <printf>` 指令跳转到 `printf` 函数。
 
@@ -1637,8 +1637,8 @@ printf("H%x Wo%s", 57616, &i);
 
 这里有一个 [小端和大端存储的描述](https://www.webopedia.com/definitions/big-endian "小端和大端存储的描述") 和一个 [更异想天开的描述](http://www.networksorcery.com/enp/ien/ien137.txt "更异想天开的描述") 。
 
-![](../OS课设/src/Lab4-RISC_V-7.jpg)
-![](../OS课设/src/Lab4-RISC_V-8.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab4-RISC_V-7.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab4-RISC_V-8.jpg)
 
 输出为 `HE110 World`。
 
@@ -1662,7 +1662,7 @@ printf("x=%d y=%d", 3);
 2. 未定义行为：C 语言标准中规定，当格式字符串的占位符数量与提供的参数数量不匹配时，行为是未定义的。这意味着编译器不会对这种情况做出任何保证，程序可能会打印垃圾值，崩溃，甚至可能正确运行（但这是偶然的）。
 3. 栈内容未初始化：在调用 `printf` 时，函数会从栈中读取参数。由于没有提供第二个参数，`printf` 会读取一个未初始化的栈位置的值，导致打印出一个不可预测的值。
 
-![](../OS课设/src/Lab4-RISC_V-9.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab4-RISC_V-9.jpg)
 
 ### Backtrace
 
@@ -1673,33 +1673,33 @@ printf("x=%d y=%d", 3);
 #### 实验步骤
 
 1. 在文件 `kernel/riscv.h` 中添加内联函数 r_fp() 读取栈帧值。
-    ![](../OS课设/src/Lab4-backtrace-1.jpg)
+    ![](../Xv6_Lab_Report_2022/src/Lab4-backtrace-1.jpg)
 2. 在 `kernel/printf.c` 文件中编写 `backtrace()` 函数以输出所有栈帧。函数的实现思路如下：
     - 通过调用 `r_fp()` 函数读取寄存器 `s0` 中的当前函数栈帧 `fp`。
     - 根据 `RISC-V` 的栈结构，`fp-8` 存放返回地址，`fp-16` 存放原栈帧。通过原栈帧可以得到上一级栈结构，依次类推，直到获取到最初的栈结构。
     - 需要考虑获取上一级栈帧的终止条件。`RISC-V` 的用户栈空间占一个页面，可以通过 `PGROUNDDOWN()` 和 `PGROUNDUP()` 计算得到一个地址所在页面的最高和最低地址。初始从寄存器 `s0` 读取到的栈帧 `fp` 是在用户栈空间中的地址，由此可以得到用户栈的页面最高和最低地址作为循环的终止条件。
-    ![](../OS课设/src/Lab4-backtrace-2.jpg)
+    ![](../Xv6_Lab_Report_2022/src/Lab4-backtrace-2.jpg)
 3. 添加 `backtrace()` 函数原型到 `kernel/defs.h`。 
-    ![](../OS课设/src/Lab4-backtrace-3.jpg)
+    ![](../Xv6_Lab_Report_2022/src/Lab4-backtrace-3.jpg)
 4. 在 `kernel/sysproc.c` 的 `sys_sleep()` 函数中添加对 `backtrace()` 的调用。
-    ![](../OS课设/src/Lab4-backtrace-4.jpg)
+    ![](../Xv6_Lab_Report_2022/src/Lab4-backtrace-4.jpg)
 5. 在 `kernel/printf.c` 的 `panic()` 函数中添加对 `backtrace()` 的调用。
-    ![](../OS课设/src/Lab4-backtrace-5.jpg)
+    ![](../Xv6_Lab_Report_2022/src/Lab4-backtrace-5.jpg)
 
 6. 运行与测试
 
 #### 实验结果
 
 1. 在 `xv6` 中运行 `bttest`, 输出 3 个栈帧的返回地址; 退出 `xv6` 后运行 `addr2line -e kernel/kernel 将 bttest` 的输出作为输入, 输出对应的调用栈函数, 如下图所示。
-![](../OS课设/src/Lab4-backtrace-6.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab4-backtrace-6.jpg)
 根据输出的源码行号找对应的源码, 发现就是 `backtrace()` 函数的所有调用栈的返回地址(函数调用完后的下一代码).
-![](../OS课设/src/Lab4-backtrace-7.jpg)
-![](../OS课设/src/Lab4-backtrace-8.jpg)
-![](../OS课设/src/Lab4-backtrace-9.jpg)
-![](../OS课设/src/Lab4-backtrace-10.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab4-backtrace-7.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab4-backtrace-8.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab4-backtrace-9.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab4-backtrace-10.jpg)
 
 2. 运行 `/grade-traps backtrace` 测试输出。
-![](../OS课设/src/Lab4-backtrace-11.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab4-backtrace-11.jpg)
 
 #### 分析讨论
 
@@ -1732,29 +1732,29 @@ printf("x=%d y=%d", 3);
 int sigalarm(int ticks, void (*handler)());
 int sigreturn(void);
 ```
-![](../OS课设/src/Lab4-alarm-1.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab4-alarm-1.jpg)
 
 2. 在 `user/usys.pl` 脚本中添加两个系统调用的相应 `entry`, 在 `kernel/syscall.h` 和 `kernel/syscall.c` 添加相应声明.
 ```c
 entry("sigalarm");
 entry("sigreturn");
 ```
-![](../OS课设/src/Lab4-alarm-2.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab4-alarm-2.jpg)
 ```c
 #define SYS_sigalarm 22
 #define SYS_sigreturn 23
 ```
-![](../OS课设/src/Lab4-alarm-3.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab4-alarm-3.jpg)
 ```c
 extern uint64 sys_sigalarm(void);
 extern uint64 sys_sigreturn(void);
 ```
-![](../OS课设/src/Lab4-alarm-4.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab4-alarm-4.jpg)
 ```c
 [SYS_sigalarm]  sys_sigalarm,
 [SYS_sigreturn] sys_sigreturn,
 ```
-![](../OS课设/src/Lab4-alarm-5.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab4-alarm-5.jpg)
 
 3. 在 `kernel/proc.h` 中的 `struct proc` 结构体中添加记录时间间隔, 调用函数地址, 以及经过时钟数的字段
 ```c
@@ -1762,11 +1762,11 @@ int interval;
 uint64 handler;
 int passedticks;
 ```
-![](../OS课设/src/Lab4-alarm-6.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab4-alarm-6.jpg)
 
 4. 编写 `sys_sigalarm()` 函数, 将 `interval` 和 `handler` 的值存到当前进程的 `struct proc` 结构体的相应字段中.
 在这里在指导书的基础上又做了两点优化: 一方面限定了 `interval` 的值需要非负, 根据定义 `interval` 表示每次调用 `handler` 函数的周期, `0` 特指取消调用, 而负数在这里是没有意义的, 因此将其视为非法参数; 另一方面同时重置了过去的时钟数 `p->passedticks`, 此处考虑到可能中途会更新 `sigalarm()` 的调用参数, 这样之前记录的过去时钟数便失效了, 应该重新计数。
-![](../OS课设/src/Lab4-alarm-7.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab4-alarm-7.jpg)
 
 5. `kernel/proc.c` 的 `allocproc()` 函数负责分配并初始化进程, 此处对上述 `struct proc` 新增的三个字段进行初始化赋值。
 ```c
@@ -1778,14 +1778,14 @@ p->interval = 0;
 p->handler = 0;
 p->passedticks = 0;
 ```
-![](../OS课设/src/Lab4-alarm-8.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab4-alarm-8.jpg)
 
 6. 
     - 每当发生时钟中断时，`kernel/trap.c` 中的 `usertrap()` 函数会被调用。对于时钟中断，`which_dev` 变量的值为 `2`，因此可以单独处理时钟中断。根据指导书的要求，由于 `handler` 函数的地址可能为 `0`，主要通过 `interval == 0` 来判断是否终止定时调用函数。
     - 每次发生时钟中断时，将 `passedticks` 增加 `1`。当 `passedticks` 达到 `interval` 时，调用 `handler()` 函数，并将 `passedticks` 置零，以便下次调用定时函数。
     - 关键在于如何调用定时函数 `handler()`。需要注意的是，在 `usertrap()` 中，页表已经切换为内核页表（切换操作在 `uservec` 函数中完成），而 `handler` 是用户空间的函数虚拟地址，不能直接调用。实际上，这里并没有直接调用 `handler` 函数，而是将 `p->trapframe->epc` 设置为 `p->handler`，这样在返回到用户空间时，程序计数器指向 `handler` 定时函数的地址，从而实现了定时函数的执行。
 
-![](../OS课设/src/Lab4-alarm-9.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab4-alarm-9.jpg)
 
 7. 修改 `Makefile` 文件中的 `UPROGS` 部分, 添加对 `alarmtest.c` 的编译。
 
@@ -1803,7 +1803,7 @@ p->passedticks = 0;
     struct trapframe* trapframecopy;      // the copy of trapframe
     };
     ```
-    ![](../OS课设/src/Lab4-alarm-10.jpg)
+    ![](../Xv6_Lab_Report_2022/src/Lab4-alarm-10.jpg)
 
 10. 在 `kernel/trap.c` 的 `usertrap()` 中覆盖 `p->trapframe->epc` 前做 `trapframe` 的副本。
 
@@ -1824,7 +1824,7 @@ p->passedticks = 0;
     // ...
     }
     ```
-    ![](../OS课设/src/Lab4-alarm-11.jpg)
+    ![](../Xv6_Lab_Report_2022/src/Lab4-alarm-11.jpg)
 
 11. 在 `sys_sigreturn()` 中将副本恢复到原 `trapframe`。此处在拷贝副本前额外做了一个地址判断, 是防止用户程序在未调用 `sigalarm()` 便使用了该系统调用, 那么此时没有副本即 `trapframecopy` 是无效的, 应避免错误拷贝. 在拷贝后将 `trapframecopy` 置零, 表示当前没有副本。
     ```c
@@ -1840,11 +1840,11 @@ p->passedticks = 0;
         return p->trapframe->a0;	// 返回a0,避免被返回值覆盖
     }
     ```
-    ![](../OS课设/src/Lab4-alarm-12.jpg)
+    ![](../Xv6_Lab_Report_2022/src/Lab4-alarm-12.jpg)
 
 12. 为了保证 `trapframecopy` 的一致性, 在初始进程 `kernel/proc.c` 的 `allocproc()` 中, 初始化 `p->trapframecopy` 为 0, 表明初始时无副本。
 
-![](../OS课设/src/Lab4-alarm-13.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab4-alarm-13.jpg)
 
 13. 根据指导书的要求，定时函数 `handler` 需要防止重入，即在其尚未返回时不能触发下一次调用。为此，需要将 `p->passedticks = 0`; 从原本的 `usertrap()` 移至 `sys_sigreturn()` 中。因为在 `usertrap()` 中重置 `passedticks` 后，后续的时钟中断会继续递增 `passedticks`，可能再次满足调用 `handler` 的条件。而将重置操作移至 `sys_sigreturn()` 之后，即在函数最后返回前才清零，按照系统调用的正确使用方法，`sigreturn()` 的结束应该标志着 `handler()` 的结束。这样，在 `handler()` 还未结束时，`passedticks` 会继续递增，从而不会满足调用 `handler` 的条件，自然就可以避免重入。上述代码已经过修改。
 
@@ -1853,11 +1853,11 @@ p->passedticks = 0;
 #### 实验结果
 
 1. 在 xv6 中执行 `alarmtest` 和 `usertests` 均通过。
-![](../OS课设/src/Lab4-alarm-14.jpg)
-![](../OS课设/src/Lab4-alarm-15.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab4-alarm-14.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab4-alarm-15.jpg)
 
 2. ./grade-lab-traps alarmtest 单项测试通过。
-![](../OS课设/src/Lab4-alarm-16.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab4-alarm-16.jpg)
 
 #### 分析讨论
 
@@ -1999,9 +1999,9 @@ uvmcopy(pagetable_t old, pagetable_t new, uint64 sz)
 
     - 在这个过程中，如果出现了任何失败，需要立即设置 `p->killed` 为 `1` ，然后跳转到 `end` 处，退出并杀死进程。
     - 在申请新的物理内存并进行映射之前，需要使用 `uvmunmap` 函数将虚拟地址与旧的物理内存进行解绑。
-    ![](../OS课设/src/Lab5-4.jpg)
+    ![](../Xv6_Lab_Report_2022/src/Lab5-4.jpg)
     上面代码中使用了 `pte = cow_walk(p->pagetable, PGROUNDDOWN(va))` 函数，是一个自定义的函数，在 `vm.c` 文件中进行定义。仿照 `walkaddr` 函数写一个函数用来检验虚拟地址是否是来自 `copy on write` 。注意其中添加了一个对 `PTE_RSW` 位的检查，这是关键。
-    ![](../OS课设/src/Lab5-5.jpg)
+    ![](../Xv6_Lab_Report_2022/src/Lab5-5.jpg)
 
 5. 内存引用计数相关的步骤在第一步已经做了相关的定义，接下来是一些使用的地方。
 
@@ -2017,7 +2017,7 @@ uvmcopy(pagetable_t old, pagetable_t new, uint64 sz)
     }   
     ```
     在申请内存 `kalloc()` 函数，释放内存 `kfree()` 函数中，进行如下修改：
-    ![](../OS课设/src/Lab5-6.jpg)
+    ![](../Xv6_Lab_Report_2022/src/Lab5-6.jpg)
     - `freerange` 函数中调用了 `kfree` ，这个函数在系统内存初始化的时候调用，而且是在没有 `kalloc` 的前提下调用的，因为我们修改了 `kfree` 函数的逻辑，所以 `freerange` 函数中要先将内存引用计数置1。
     ```c
     void
@@ -2033,7 +2033,7 @@ uvmcopy(pagetable_t old, pagetable_t new, uint64 sz)
     }
     ```
 6. 下面对 `copyout` 函数进行修改。这里就是将内核物理内存copy到用户物理内存前需要检查一下用户物理内存（dst）是不是COW页面，如果时则需要申请新的用户物理内存。这里只需要改动 `copyout` 而不需要改 `copyin` 是因为前者是内核拷贝到用户，是会对一个用户页产生写的操作，而后者是用户拷到内核，只是去读这个用户页的内容，COW页允许读。
-    ![](../OS课设/src/Lab5-7.jpg)
+    ![](../Xv6_Lab_Report_2022/src/Lab5-7.jpg)
 
 7. 最后，一些函数需要在defs.h中进行声明。
 ```c
@@ -2047,9 +2047,9 @@ pte_t*          cow_walk(pagetable_t , uint64 );
 8. 编译并进行测试。
     
 #### 实验结果
-![](../OS课设/src/Lab5-1.jpg)
-![](../OS课设/src/Lab5-2.jpg)
-![](../OS课设/src/Lab5-3.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab5-1.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab5-2.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab5-3.jpg)
 
 #### 分析讨论
 
