@@ -10,7 +10,7 @@
 
 #### 安装WSL并启用虚拟化
 
-1. 下载并安装适用于 Linux 的 Windows 子系统（Windows Subsystem for Linux）。然后从 Microsoft Store 添加 Ubuntu 20.04（Ubuntu 20.04 from the Microsoft Store）。成功后应该能够启动 Ubuntu 并与机器交互。在Windows中，可以访问"\wsl$"目录下的所有WSL文件。例如，Ubuntu 20.04的主目录应该在"\wsl$Ubuntu-20.04\home"。
+1. 下载并安装适用于 Linux 的 Windows 子系统（Windows Subsystem for Linux）。然后从 Microsoft Store 添加 Ubuntu 20.04（Ubuntu 20.04 from the Microsoft Store）。成功后应该能够启动 Ubuntu 并与机器交互。在Windows中，可以访问 "\wsl$" 目录下的所有WSL文件。例如，Ubuntu 20.04的主目录应该在 "\wsl$Ubuntu-20.04\home" 。
 
 2. 检查WSL2要求：确认Windows版本是否符合要求。按下 Win+R 打开运行窗口，输入 "winver" 并检查 Windows 版本，确保版本号大于 1903。
 
@@ -2055,13 +2055,62 @@ pte_t*          cow_walk(pagetable_t , uint64 );
 
 ## Lab6 : Multithreading
 
+本实验与多线程有关，具体包括：在用户级线程包中实现线程之间的切换，使用多个线程来加速程序，
+并实现一个屏障。
+
+开始实验，切换到thread分支：
+
+```bash
+$ git fetch
+$ git checkout thread
+$ make clean
+```
+
 ### Uthread: switching between threads 
 
 #### 实验目的
 
+设计并实现一个用户级线程系统的上下文切换机制。补充完成一个用户级线程的创建和切换上下文的代码。需要创建线程、保存/恢复寄存器以在线程之间切换，并且确保解决方案通过测
+试。
+
 #### 实验步骤
 
+1. 给 `thread` 结构一个字段用来保存相关寄存器，直接用 `context` 即可，在 `user/uthread.c` 里添加：
+    ```c
+    // user/uthread.c
+    struct context {
+    uint64 ra;
+    uint64 sp;
+
+    // callee-saved
+    uint64 s0;
+    uint64 s1;
+    uint64 s2;
+    uint64 s3;
+    uint64 s4;
+    uint64 s5;
+    uint64 s6;
+    uint64 s7;
+    uint64 s8;
+    uint64 s9;
+    uint64 s10;
+    uint64 s11;
+    };
+
+    struct thread {
+        char       stack[STACK_SIZE]; /* the thread's stack */
+        int        state;             /* FREE,RUNNING,   RUNNABLE */
+        struct context context;       // 借鉴proc的context
+    };
+    ```
+    ![](../Xv6_Lab_Report_2022/src/Lab6-Uthread-1.jpg)
+
+    ![](../Xv6_Lab_Report_2022/src/Lab6-Uthread-2.jpg)
+
 #### 实验结果
+
+![](../Xv6_Lab_Report_2022/src/Lab6-Uthread-3.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab6-Uthread-4.jpg)
 
 #### 分析讨论
 
@@ -2070,7 +2119,12 @@ pte_t*          cow_walk(pagetable_t , uint64 );
 #### 实验目的
 
 #### 实验步骤
-
+![](../Xv6_Lab_Report_2022/src/Lab6-using_threads-1.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab6-using_threads-2.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab6-using_threads-3.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab6-using_threads-4.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab6-using_threads-5.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab6-using_threads-6.jpg)
 #### 实验结果
 
 #### 分析讨论
@@ -2080,26 +2134,45 @@ pte_t*          cow_walk(pagetable_t , uint64 );
 #### 实验目的
 
 #### 实验步骤
-
+![](../Xv6_Lab_Report_2022/src/Lab6-Barrier-1.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab6-Barrier-2.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab6-Barrier-3.jpg)
 #### 实验结果
 
 #### 分析讨论
 
 ## Lab7 : Network driver
 
-### Sysinfo 
-
 #### 实验目的
 
 #### 实验步骤
-
+![](../Xv6_Lab_Report_2022/src/Lab7-1.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab7-2.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab7-6.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab7-7.jpg)
 #### 实验结果
-
+![](../Xv6_Lab_Report_2022/src/Lab7-3.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab7-4.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab7-5.jpg)
 #### 分析讨论
 
 ## Lab8 : Lock
 
-### Sysinfo 
+### Memory allocator
+
+#### 实验目的
+
+#### 实验步骤
+![](../Xv6_Lab_Report_2022/src/Lab8-memory_allocator-1.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab8-memory_allocator-2.jpg)
+
+#### 实验结果
+![](../Xv6_Lab_Report_2022/src/Lab8-memory_allocator-3.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab8-memory_allocator-4.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab8-memory_allocator-5.jpg)
+#### 分析讨论
+
+### Buffer cache
 
 #### 实验目的
 
