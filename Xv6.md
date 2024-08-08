@@ -2163,13 +2163,16 @@ $ make clean
 #### 实验目的
 
 #### 实验步骤
+
 ![](../Xv6_Lab_Report_2022/src/Lab8-memory_allocator-1.jpg)
 ![](../Xv6_Lab_Report_2022/src/Lab8-memory_allocator-2.jpg)
 
 #### 实验结果
+
 ![](../Xv6_Lab_Report_2022/src/Lab8-memory_allocator-3.jpg)
 ![](../Xv6_Lab_Report_2022/src/Lab8-memory_allocator-4.jpg)
 ![](../Xv6_Lab_Report_2022/src/Lab8-memory_allocator-5.jpg)
+
 #### 分析讨论
 
 ### Buffer cache
@@ -2178,20 +2181,69 @@ $ make clean
 
 #### 实验步骤
 
+![](../Xv6_Lab_Report_2022/src/Lab8-buffer_cache-1.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab8-buffer_cache-2.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab8-buffer_cache-3.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab8-buffer_cache-4.jpg)
+
 #### 实验结果
 
 #### 分析讨论
 
 ## Lab9 : File system
 
-### Sysinfo 
+### Large files
 
 #### 实验目的
 
 #### 实验步骤
+
+![](../Xv6_Lab_Report_2022/src/Lab9-large_files-1.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab9-large_files-2.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab9-large_files-3.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab9-large_files-4.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab9-large_files-5.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab9-large_files-6.jpg)
+
+#### 实验结果
+
+#### 分析讨论
+
+### Symbolic links
+
+#### 实验目的
+
+#### 实验步骤
+
+![](../Xv6_Lab_Report_2022/src/Lab9-symbolic_links-1.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab9-symbolic_links-2.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab9-symbolic_links-3.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab9-symbolic_links-4.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab9-symbolic_links-5.jpg)
 
 #### 实验结果
 
 #### 分析讨论
 
 ## Lab10 : Mmap
+
+### Mmap
+
+#### 实验目的
+
+#### 实验步骤
+
+![](../Xv6_Lab_Report_2022/src/Lab10-1.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab10-2.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab10-3.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab10-4.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab10-5.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab10-6.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab10-7.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab10-8.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab10-9.jpg)
+
+
+#### 实验结果
+
+#### 分析讨论
