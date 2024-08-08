@@ -2053,6 +2053,19 @@ pte_t*          cow_walk(pagetable_t , uint64 );
 
 #### 分析讨论
 
+1. 优点与局限性：
+   - 优点：
+        - 内存节省：通过写时复制，父子进程在初始阶段共享相同的物理页，只有在实际需要写入时才会分配新的页，从而大大节省了内存。
+        - 性能提升：减少了 fork 操作时的内存复制，降低了系统开销，提高了进程创建的速度。
+        - 简化内存管理：通过引用计数的管理，可以更高效地管理物理内存的分配和释放。
+    - 局限性：
+
+        - 实现复杂性增加：引入写时复制和引用计数机制增加了系统实现的复杂性，需要处理更多的边界情况和错误处理。
+        - 额外的开销：虽然写时复制节省了内存，但在实际写操作发生时，仍然需要进行内存分配和复制，这在某些情况下可能会带来额外的开销。
+        - 测试与调试困难：实现写时复制需要对内存管理和页表进行深入的修改，这使得测试和调试变得更加困难。
+        - 
+2. 实验心得：通过这个实验，我们深入了解了写时复制技术在操作系统中的实现原理及其优势。我们通过修改 xv6 操作系统，成功地实现了一个简单但有效的 COW fork 功能。虽然在实现过程中遇到了一些挑战，但最终的实现证明了写时复制在提高系统性能和节省资源方面的显著优势。通过进一步的优化和改进，可以使这一技术在实际应用中发挥更大的作用。
+
 ## Lab6 : Multithreading
 
 本实验与多线程有关，具体包括：在用户级线程包中实现线程之间的切换，使用多个线程来加速程序，
@@ -2096,64 +2109,205 @@ $ make clean
     uint64 s10;
     uint64 s11;
     };
-
+    ```
+2. 在线程结构体 `struct thread` 中添加线程上下文字段 `context`.
+很显然, 上文定义的线程上下文结构体 `struct ctx` 是和线程一一对应的, 应作为线程结构体的一个成员变量.
+    ```c
     struct thread {
         char       stack[STACK_SIZE]; /* the thread's stack */
         int        state;             /* FREE,RUNNING,   RUNNABLE */
         struct context context;       // 借鉴proc的context
     };
     ```
+3. 在 `thread_create()` 函数中添加代码，该函数的主要任务是进行线程的初始化操作。具体过程如下：
+    - 首先，在线程数组中找到一个状态为 FREE（未初始化）的线程。
+    - 设置该线程的状态为 RUNNABLE，并进行其他初始化操作。
+
+    需要特别注意的是，传递给 thread_create() 函数的参数 func 必须记录下来，以便在线程运行时能够执行该函数。此外，线程有独立的栈结构，函数运行时需要在该线程的栈上进行，因此需要初始化线程的栈指针。
+
+    在线程调度切换时，必须保存和恢复寄存器状态。这里分别对应的是 ra（返回地址寄存器）和 sp（栈指针寄存器）。在线程初始化时设置这些寄存器的值，确保在后续的调度切换过程中能正确保持线程状态。
     ![](../Xv6_Lab_Report_2022/src/Lab6-Uthread-1.jpg)
+
+4. 在 `thread_schedule()` 函数中添加代码。该函数负责用户多线程间的调度，通过函数主动调用进行线程切换。其主要任务是从当前线程在线程数组中的位置开始，寻找一个状态为 `RUNNABLE` 的线程进行运行。这与 `kernel/proc.c` 中的 `scheduler()` 函数非常相似。
+
+    找到合适的线程后，需要进行线程切换，调用 `thread_switch()` 函数。根据 `user/thread.c` 中的外部声明以及指导书的要求，可以推断出该函数定义在 `user/uthread_switch.S` 中，并用汇编代码实现。其功能类似于 `kernel/swtch.S` 中的 `swtch()` 函数，负责在线程切换时保存和恢复寄存器状态。
 
     ![](../Xv6_Lab_Report_2022/src/Lab6-Uthread-2.jpg)
 
+5. 最后，在 `user/uthread_switch.S` 中添加 `thread_switch` 的代码。正如上文所述，该函数的功能与 `kernel/swtch.S` 中的 `swtch` 函数一致。由于 `struct ctx` 与内核中的 `struct context` 结构体的成员相同，因此该函数可以直接复用 `kernel/swtch.S` 中的 `swtch` 代码。
+
+6. 测试并运行。
+
 #### 实验结果
 
+1. 在 `xv6` 中运行 `uthread`:
 ![](../Xv6_Lab_Report_2022/src/Lab6-Uthread-3.jpg)
+
+2. `./grade-lab-thread uthread` 单项测试:
 ![](../Xv6_Lab_Report_2022/src/Lab6-Uthread-4.jpg)
 
 #### 分析讨论
+
+1. 实验中遇到的问题及解决：
+   1. 线程调度不正确：在 `thread_schedule()` 函数中，无法正确找到 RUNNABLE 状态的线程，导致线程无法正确调度。因此，在 `thread_schedule()` 函数中添加调试信息，验证线程数组的状态变化和调度逻辑的正确性。确保从当前线程的位置开始，正确地遍历线程数组，并找到下一个 `RUNNABLE` 状态的线程。
+   2. 上下文切换失败：在 `thread_switch()` 函数中，无法正确保存和恢复寄存器状态，导致线程切换失败或程序崩溃。因此，检查 `thread_switch` 的汇编代码，确保寄存器的保存和恢复操作正确无误。可以对照 `kernel/swtch.S` 中的 `swtch` 函数，逐行检查代码的正确性。此外，可以通过打印寄存器值或使用调试器，验证寄存器的正确保存和恢复。
+   3. 线程调度不正确：在 `thread_schedule()` 函数中，无法正确找到 `RUNNABLE` 状态的线程，导致线程无法正确调度。因此，在 `thread_schedule()` 函数中添加调试信息，验证线程数组的状态变化和调度逻辑的正确性。确保从当前线程的位置开始，正确地遍历线程数组，并找到下一个 `RUNNABLE` 状态的线程。
+2. 思考题：
+   > `thread_switch` needs to save/restore only the callee-save registers. Why?
+
+   这里仅需保存被调用者保存(`callee-save`)寄存器的原因和 `xv6` 中内核线程切换时仅保留 `callee-save` 寄存器的原因是相同的。由于 `thread_switch()` 一定由其所在的 C 语言函数调用，因此函数的调用规则是满足 `xv6` 的函数调用规则的，对于其它 `caller-save` 寄存器都会被保存在线程的堆栈上，在切换后的线程上下文恢复时可以直接从切换后线程的堆栈上恢复 `caller-save` 寄存器的值。由于 `callee-save` 寄存器是由被调用函数即 `thread_switch()` 进行保存的，在函数返回时已经丢失，因此需要额外保存这些寄存器的内容。
+3. 实验心得：通过本次实验，我们成功实现了用户级线程系统的上下文切换机制，并通过了相关测试。实验过程中，我们深入了解了线程的创建、上下文保存与恢复等关键技术，并通过实际编码加深了对用户级线程系统的理解。通过进一步的优化和改进，可以使用户级线程系统在实际应用中发挥更大的作用。
 
 ### Using threads 
 
 #### 实验目的
 
+本实验旨在通过使用线程和锁实现并行编程，以及在多线程环境下处理哈希表。学习如何使用线程库创建和管理线程，以及如何通过加锁来实现一个线程安全的哈希表，使用锁来保护共享资源，以确保多线程环境下的正确性和性能。
+
 #### 实验步骤
+1. 使用如下命令构建 `ph` 程序, 该程序包含一个线程不安全的哈希表。
+2. 运行 `./ph 1` 即使用单线程运行该哈希表，输出如下，其 `0` 个键丢失:
+   
 ![](../Xv6_Lab_Report_2022/src/Lab6-using_threads-1.jpg)
+
+3. 运行 `./ph 2` 即使用两个线程运行该哈希表，输出如下，可以看到其 `put` 速度近乎先前 2 倍，但是有 16423 个键丢失，也说明了该哈希表非线程安全。
+
 ![](../Xv6_Lab_Report_2022/src/Lab6-using_threads-2.jpg)
+
+4. 定义互斥锁数组。
+    根据指导书可知，此处主要通过加互斥锁来解决线程不安全的问题。此处没有选择使用一个互斥锁，这样会导致访问整个哈希表都是串行的。而考虑到对该哈希表，实际上只有对同一 `bucket` 操作时才可能造成数据的丢失，不同 `bucket` 之间是互不影响的，因此此处是构建了一个互斥锁数组，每个 `bucket` 对应一个互斥锁。
+    ```c
+    pthread_mutex_t locks[NBUCKET]; // lab7-2
+    ```
+5. 在 `main()` 函数中对所有互斥锁进行初始化。
 ![](../Xv6_Lab_Report_2022/src/Lab6-using_threads-3.jpg)
+
+6. 在 `put()` 中加锁。
+    由于线程安全问题是由于对 `bucket` 中的链表操作时产生的，因此要在对链表操作的前后加锁。
+    但实际上，对于加锁的临界区可以缩小至 `insert()` 函数。 原因是 `insert()` 函数采取头插法插入 `entry`，在函数的最后才使用 `*p=e` 修改 `bucket` 链表头 `table[i]` 的值，也就是说，在前面操作的同时，并不会对 `bucket` 链表进行修改, 因此可以缩小临界区的方法。
+    不需要在 `get()` 中加锁。`get()` 函数主要是遍历 `bucket` 链表找寻对应的 `entry`，并不会对 `bucket` 链表进行修改，实际上只是读操作，因此无需加锁。
 ![](../Xv6_Lab_Report_2022/src/Lab6-using_threads-4.jpg)
-![](../Xv6_Lab_Report_2022/src/Lab6-using_threads-5.jpg)
-![](../Xv6_Lab_Report_2022/src/Lab6-using_threads-6.jpg)
+
+7. 增大 `NBUCKET`。增大 `NBUCKET` 即增加哈希表的 `bucket` 数，从而一定程度上会减少两个同时运行的线程 `put()` 时对同一个 `bucket` 进行操作的概率，自然也就减少了锁的争用，能够一定程度上挺高并发性能。此处选择 `NBUCKET=7`。
+   ```c
+   #define NBUCKET 7
+   ```
+
+8. 编译运行并测试。
+
 #### 实验结果
 
+1. `./ph 2` 测试。
+![](../Xv6_Lab_Report_2022/src/Lab6-using_threads-5.jpg)
+
+1. `./grade-lab-thread ph_fast` 单项测试。
+![](../Xv6_Lab_Report_2022/src/Lab6-using_threads-6.jpg)
+
 #### 分析讨论
+
+1. 实验中遇到的问题及解决：
+    1. 线程安全问题：最初的哈希表在多线程环境下会导致数据丢失。通过为每个 `bucket` 添加互斥锁，我们成功地解决了这个问题。
+    2. 性能问题：在加锁过程中，需要确保锁的粒度尽可能小，以提高并发性能。通过将加锁范围缩小至 `insert()` 函数，我们减少了锁的争用，提升了程序性能。
+    3. 锁的争用：当多个线程同时访问同一个 `bucket` 时，会导致锁的争用，从而影响性能。通过增大 `NBUCKET` 的值，减少了锁的争用，提高了并发性能。
+2. 性能优化：
+    1. 引入读写锁：在当前实现中，所有访问 `bucket` 的操作都使用了互斥锁。为了进一步提高性能，可以引入读写锁，使得多个线程可以同时进行读操作，而写操作仍然需要独占锁。
+    2. 动态调整 `bucket` 数量：根据运行时的负载情况，动态调整 `bucket` 的数量，以优化哈希表的性能。
+    3. 性能监控与调优：通过性能监控工具，分析锁的争用情况和系统瓶颈，进一步优化锁的使用和哈希表的结构。
+3. 实验心得：通过本次实验，我深入理解了多线程环境下的数据一致性问题，并通过使用互斥锁成功地实现了一个线程安全的哈希表。实验中遇到的问题和解决方案使我进一步掌握了并行编程的技巧和方法。通过不断优化和调试，我们不仅解决了数据丢失问题，还显著提高了程序的并发性能。这些经验和教训将为我未来的并行编程实践提供宝贵的参考。
 
 ### Barrier
 
 #### 实验目的
 
+本实验的目的是实现一个线程屏障（`barrier`），即每个线程在到达屏障时等待，直到所有线程都到达屏障后才能继续运行，从而加深对多线程编程中同步和互斥机制的理解。在多线程应用中，线程屏障用于确保多个线程在达到某个点后都等待，直到所有其他线程也到达该点。通过使用 `pthread` 条件变量，我们将学习如何实现线程屏障，解决竞争条件和同步问题。
+
 #### 实验步骤
+
+1. 运行如下命令构建 `barrier` 程序，该程序要求多线程同时执行到同一位置后再继续运行，即多线程同步问题。
+    ```bash
+    $ make barrier
+    ```
+2. 运行 `./barrier 2` 即使用两个线程运行该程序，输出如下，即最初版本不满足该性质，会致使运行失败。
 ![](../Xv6_Lab_Report_2022/src/Lab6-Barrier-1.jpg)
-![](../Xv6_Lab_Report_2022/src/Lab6-Barrier-2.jpg)
-![](../Xv6_Lab_Report_2022/src/Lab6-Barrier-3.jpg)
+
+3. 根据上述思路，在 `barrier()` 函数中添加以下代码。需要注意的是，在调用 `pthread_cond_broadcast()` 唤醒其他线程之前，必须先设置变量 `bstate.round` 和 `bstate.nthread`，否则在其他线程进入下一轮循环时，这两个字段的值可能尚未更新。
+    ```c
+    static void 
+    barrier()
+    {
+        pthread_mutex_lock(&bstate.barrier_mutex);
+        // judge whether all threads reach the barrier
+        if(++bstate.nthread != nthread)  {    // not all threads reach    
+            pthread_cond_wait(&bstate.barrier_cond,&bstate.barrier_mutex);  // wait other threads
+        } else {  // all threads reach
+            bstate.nthread = 0; // reset nthread
+            ++bstate.round; // increase round
+            pthread_cond_broadcast(&bstate.barrier_cond);   // wake up all sleeping threads
+        }
+        pthread_mutex_unlock(&bstate.barrier_mutex);
+    }
+    ```
+
+4. 编译运行并测试。
+
 #### 实验结果
+
+![](../Xv6_Lab_Report_2022/src/Lab6-Barrier-2.jpg)
+
+![](../Xv6_Lab_Report_2022/src/Lab6-Barrier-3.jpg)
 
 #### 分析讨论
 
+通过本次实验，我深入理解了线程屏障机制的实现原理和具体实现过程。通过引入 `pthread` 条件变量和互斥锁，我们成功实现了一个线程安全的屏障机制，确保多线程环境下的同步。实验中遇到的问题和解决方案，使我进一步掌握了多线程编程的技巧和方法。这些经验将为我未来的并行编程实践提供宝贵的参考。
+
 ## Lab7 : Network driver
+
+### Networking
 
 #### 实验目的
 
+通过为网络接口卡（NIC）编写一个 xv6 设备驱动程序，来理解网络通信的核心机制。具体步骤包括创建以太网驱动程序、处理 ARP 请求和响应、实现 IP 数据包的发送和接收、处理 ICMP Echo 请求和响应、实现 UDP 数据报的发送和接收，以及编写一个简单的 DHCP 客户端从 DHCP 服务器获取 IP 地址。通过这个实验，可以深入理解网络协议栈的工作原理。
+
 #### 实验步骤
-![](../Xv6_Lab_Report_2022/src/Lab7-1.jpg)
-![](../Xv6_Lab_Report_2022/src/Lab7-2.jpg)
-![](../Xv6_Lab_Report_2022/src/Lab7-6.jpg)
-![](../Xv6_Lab_Report_2022/src/Lab7-7.jpg)
+1. 为了实现 `kernel/e1000.c` 中的 `e1000_transmit()` 函数以发送以太网数据帧到网卡，我们需要处理网卡的发送数据队列 `tx_ring`。每个元素是一个发送描述符，`addr` 字段指向以太网帧数据的缓冲区地址，对应 `tx_mbufs`。以下是 `e1000_transmit()` 的实现步骤：
+
+    1. 读取发送尾指针对应的寄存器 `regs[E1000_TDT]`，获取软件可以写入的位置，即发送队列的索引 `tail`。
+    2. 获取对应的发送描述符 `desc`。
+    3. 检查尾指针指向的描述符的状态 `status` 是否包含 `E1000_TXD_STAT_DD` 标志位。如果未设置该标志位，说明数据尚未传输完毕，返回失败。
+    4. 释放描述符对应的缓冲区（如果存在）。
+    5. 更新描述符的 `addr` 字段为数据帧缓冲区的头部 `m->head`，`length` 字段为数据帧的长度 `m->len`。
+    6. 更新描述符的 `cmd` 字段，设置 `E1000_TXD_CMD_EOP` 和 `E1000_TXD_CMD_RS` 标志位。
+    7. 将数据帧缓冲区 `m` 记录到 `tx_mbufs` 中，以便后续释放。
+    8. 使用 `__sync_synchronize()` 设置内存屏障，确保描述符更新完成后再更新尾指针。
+    9. 更新发送尾指针 `regs[E1000_TDT]`。
+    10. 释放锁，返回成功。
+    ![](../Xv6_Lab_Report_2022/src/Lab7-1.jpg)
+
+2. 为了实现 `kernel/e1000.c` 中的 `e1000_recv()` 函数以接收数据到内核，需要处理接收队列 `rx_ring` 和其缓冲区 `rx_mbufs`。以下是具体实现步骤：
+
+    1. 读取接收尾指针寄存器 `regs[E1000_RDT]` 并加 `1` 取余，获取软件可读取的位置，即接收且未处理的数据帧的描述符索引 `tail`。
+    2. 获取对应的接收描述符 `desc`。
+    3. 检查描述符的状态 `status` 是否包含 `E1000_RXD_STAT_DD` 标志位，确定数据帧已被硬件处理完毕，可以由内核解封装。
+    4. 将 `rx_mbufs[tail]` 中的数据帧长度记录到描述符的 `length` 字段，并调用 `net_rx()` 将数据传递给网络栈进行解封装。
+    5. 调用 `mbufalloc()` 分配新的接收缓冲区替换发送给网络栈的缓冲区，并更新描述符的 `addr` 字段指向新的缓冲区。
+    6. 清空描述符的状态 `status` 字段。
+    7. 继续检查下一个描述符，直到当前描述符的 `DD` 标志位未被设置，说明数据尚未被硬件处理完毕。
+    8. 更新接收尾指针 `regs[E1000_RDT]` 指向最后一个已处理的描述符。
+    9. 不需要加锁，因为接收函数仅在中断处理函数 `e1000_intr()` 中调用，不会出现并发问题。发送和接收数据结构独立，不会共享资源。以下是 `e1000_recv()` 的实现：
+    ![](../Xv6_Lab_Report_2022/src/Lab7-2.jpg)
+
+3. 编译并进行测试。
+
 #### 实验结果
-![](../Xv6_Lab_Report_2022/src/Lab7-3.jpg)
-![](../Xv6_Lab_Report_2022/src/Lab7-4.jpg)
-![](../Xv6_Lab_Report_2022/src/Lab7-5.jpg)
+1. 
+    1. 在 xv6 目录下执行 make server 启动服务端。
+    ![](../Xv6_Lab_Report_2022/src/Lab7-3.jpg)
+    2. 然后在另一个终端执行 `make qemu` 启动 `xv6`, 然后执行 `nettests` 命令进行测试：
+    ![](../Xv6_Lab_Report_2022/src/Lab7-4.jpg)
+    3. 然后在终端执行 `tcpdump -XXnr packets.pcap`, 可以查看捕获的报文:
+    ![](../Xv6_Lab_Report_2022/src/Lab7-5.jpg)
+2. `make grade` 测试
+![](../Xv6_Lab_Report_2022/src/Lab7-6.jpg)
 #### 分析讨论
 
 ## Lab8 : Lock
@@ -2242,7 +2396,6 @@ $ make clean
 ![](../Xv6_Lab_Report_2022/src/Lab10-7.jpg)
 ![](../Xv6_Lab_Report_2022/src/Lab10-8.jpg)
 ![](../Xv6_Lab_Report_2022/src/Lab10-9.jpg)
-
 
 #### 实验结果
 
