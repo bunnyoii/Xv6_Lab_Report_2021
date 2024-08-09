@@ -1513,7 +1513,7 @@ pgtbltest: all tests succeeded
 - `kernel/trampoline.S`：用于从用户空间到内核空间再返回的汇编代码。
 - `kernel/trap.c`：处理所有中断的代码。
 
-开始之前，切换到traps分支。
+开始之前，切换到 `traps` 分支。
 
 ```bash
 git fetch
@@ -1870,7 +1870,7 @@ p->passedticks = 0;
 
 虚拟内存提供了一种间接级别：内核可以通过将页表项（PTE）标记为无效或只读来拦截内存引用，导致页面错误，并且可以通过修改页表项来改变地址的含义。在计算机系统中，有一种说法是任何系统问题都可以通过增加一个间接层来解决。惰性分配实验提供了一个例子。本实验探讨了另一个例子：写时复制的fork。
 
-开始实验，切换到cow分支：
+开始实验，切换到 `cow` 分支：
 
 ```bash
 $ git fetch
@@ -2068,10 +2068,9 @@ pte_t*          cow_walk(pagetable_t , uint64 );
 
 ## Lab6 : Multithreading
 
-本实验与多线程有关，具体包括：在用户级线程包中实现线程之间的切换，使用多个线程来加速程序，
-并实现一个屏障。
+本实验与多线程有关，具体包括：在用户级线程包中实现线程之间的切换，使用多个线程来加速程序，并实现一个屏障。
 
-开始实验，切换到thread分支：
+开始实验，切换到 `thread` 分支：
 
 ```bash
 $ git fetch
@@ -2308,26 +2307,133 @@ $ make clean
     ![](../Xv6_Lab_Report_2022/src/Lab7-5.jpg)
 2. `make grade` 测试
 ![](../Xv6_Lab_Report_2022/src/Lab7-6.jpg)
+
 #### 分析讨论
 
+1. 遇到的问题及解决
+    1. 描述符队列管理：初始实现时，不清楚如何正确管理描述符队列中的首尾指针，导致队列操作混乱。解决：仔细阅读开发手册，理解描述符队列的管理机制，明确发送和接收队列的尾指针分别由软件和硬件维护。通过设置内存屏障，确保描述符更新的原子性和一致性。
+
+    2. 数据帧状态检查：在处理接收数据时，不清楚如何判断数据帧是否已被硬件处理完毕。因此，通过检查描述符状态中的 `E1000_RXD_STAT_DD` 标志位，判断数据帧是否已被硬件处理完毕，确保只有已处理的数据帧才传递给网络栈。
+
+    3. 缓冲区管理：在接收数据时，初始实现未能正确替换已处理的缓冲区，导致缓冲区复用问题。因此，在每次处理完接收的数据帧后，分配新的缓冲区替换已处理的缓冲区，确保缓冲区的正确管理和复用。
+
+2. 实验心得：通过本次实验，我们深入理解了网卡驱动程序的工作机制，尤其是发送和接收数据的处理流程。通过实现和调试 `e1000_transmit()` 和 `e1000_recv()` 函数，我们掌握了如何管理网卡的发送和接收队列，如何检查数据帧状态，如何进行缓冲区的分配和管理。
+
 ## Lab8 : Lock
+
+在并发编程中，锁常用于解决同步与互斥问题，但在多核环境下，若不合理地使用锁，可能导致“锁竞争”（lock contention）问题。为此，本实验旨在通过修改使用锁的数据结构来减少锁竞争的发生。
+
+开始实验，切换到 `lock` 分支：
+
+```bash
+$ git fetch
+$ git checkout lock
+$ make clean
+```
 
 ### Memory allocator
 
 #### 实验目的
 
+为了减少多核系统中的锁竞争并提升性能，可以重构内存分配器的设计。具体做法是为每个CPU分配一个独立的自由列表（`free list`），并且每个自由列表都有专属的锁。这样，不同CPU上的内存分配和释放操作可以并行执行，显著减少锁争用。同时，当某个CPU的自由列表耗尽时，它应能够从其他CPU的自由列表中获取部分内存。
+
 #### 实验步骤
 
+1. 在 `xv6` 中运行 `kalloctest`, 输出如下：
 ![](../Xv6_Lab_Report_2022/src/Lab8-memory_allocator-1.jpg)
+
+可以看出，`test1` 测试未通过。根据实验中 `struct spinlock` 的字段和相关代码分析，可以得知 `kmem` 锁的争用情况：`acquire()` 函数被调用了 433016 次，自旋尝试获取锁的次数为 179708 次。此外，`kmem` 锁也是争用最严重的五个锁之一。
+
+2. 构造内存页 kmems 数组.
+根据指导书要求，此处每个 CPU 需要有一个空闲内存页链表以及相应的锁，即将原本在 kernel/kalloc.c 中定义的 kmem 结构体替换为 kmems 数组，数组的大小即为 CPU 的核心数 NCPU。
+此处为 kmems 结构体额外添加了一个 lockname 的字段，用于记录每个锁的名称。
+
 ![](../Xv6_Lab_Report_2022/src/Lab8-memory_allocator-2.jpg)
 
-#### 实验结果
+3. 修改初始化 `kinit()` 函数。
 
-![](../Xv6_Lab_Report_2022/src/Lab8-memory_allocator-3.jpg)
-![](../Xv6_Lab_Report_2022/src/Lab8-memory_allocator-4.jpg)
-![](../Xv6_Lab_Report_2022/src/Lab8-memory_allocator-5.jpg)
+    在 `kinit()` 函数中，主要任务是初始化 `kmem` 的锁并调用 `freearrange()` 来初始化物理页分配。由于 `kmems` 是一个数组，因此需要将原本对 `kmem` 锁的初始化改为对 `kmems` 数组中每个锁的循环初始化。
+
+    在此过程中，使用 `snprintf()` 函数设置每个锁的名称，并将名称存储到 `lockname` 字段。这是因为在 `initlock()` 函数中，锁的名称是通过指针进行浅拷贝 `lk->name = name`，所以每个锁的名称需要保存在全局内存中，而不是使用函数的局部变量，以避免内存丢失。此外，为了配合 `kalloctest` 的输出，需要确保每个锁的名称都以“`kmem`”开头。
+    ```c
+    void
+    kinit()
+    {
+        int i;
+        for (i = 0; i < NCPU; ++i) {
+            snprintf(kmems[i].lockname, 8, "kmem_%d", i);    // the name of the lock
+            initlock(&kmems[i].lock, kmems[i].lockname);
+        }
+        //  initlock(&kmem.lock, "kmem");   // lab8-1
+        freerange(end, (void*)PHYSTOP);
+    }
+    ```
+
+4. 修改 `kfree()` 函数：
+
+    `kfree()` 函数的作用是将物理页归还到 `freelist`。根据指导书的要求，在初始阶段，`freearrange()` 会将空闲内存分配给当前运行的 `CPU` 的 `freelist`，而 `freearrange()` 本质上是通过调用 `kfree()` 来完成内存回收的。为了保持一致性，我们也需要确保每次调用 `kfree()` 时，释放的物理页都被当前运行的 `CPU` 的 `freelist` 回收。
+
+    实现这一修改的方式相对简单，具体做法是：通过 `cpuid()` 函数获取当前 `CPU` 核心的编号，然后使用 `kmems` 中对应的锁和 `freelist` 进行回收操作。
+    ```c
+    void
+    kfree(void *pa)
+    {
+        struct run *r;
+        int c;    // cpuid - lab8-1
+
+        if(((uint64)pa % PGSIZE) != 0 || (char*)pa < end || (uint64)pa >= PHYSTOP)
+            panic("kfree");
+
+        // Fill with junk to catch dangling refs.
+        memset(pa, 1, PGSIZE);
+
+        r = (struct run*)pa;
+
+        // get the current core number - lab8-1
+        push_off();
+        c = cpuid();
+        pop_off();
+        // free the page to the current cpu's freelist - lab8-1
+        acquire(&kmems[c].lock);
+        r->next = kmems[c].freelist;
+        kmems[c].freelist = r;
+        release(&kmems[c].lock);
+    }
+    ```
+5. 修改 `kalloc()` 函数：
+
+    与 `kfree()` 函数负责回收物理页相对，`kalloc()` 函数则用于分配物理页。在这个实现中，我们暂时不考虑从其他 `CPU` 的 `freelist` 中偷取空闲物理页的情况。相应地，`kalloc()` 需要通过调用 `cpuid()` 函数来获取当前 `CPU` 核心的编号，然后使用 `kmems` 中对应的锁和 `freelist` 
+6. 编写偷取物理页函数 `steal()`。
+
+    当当前 `CPU` 的空闲物理页链表 `freelist` 为空时，若其他 `CPU` 仍有空闲页，当前 `CPU` 需要从其他 `CPU` 偷取部分物理页。
+
+    寻找有空闲物理页的 `CPU` 时，使用简单的循环遍历，从当前 `CPU` 序号的下一个开始，循环遍历剩余的 `CPU`，直到找到一个非空链表。
+
+    对于偷取的数量，选择偷取目标 `CPU` 一半的空闲物理页，采用“快慢双指针”算法将链表分为两部分，前半部分为偷取到的物理页，后半部分留给目标 `CPU`。
+
+    加锁方面，在遍历和分割链表时，需要锁定当前 `CPU`。偷取时，不锁定当前 `CPU` 的链表，以避免死锁。由于同一 `CPU` 不会同时运行两个线程，不会发生内存丢失。最后，更新当前 `CPU` 的链表时再加锁。
+
+#### 实验结果
+1. 在 `xv6` 中执行 `kalloctest`, 输出如下，可以看到对于每个 `CPU` 的物理页锁的争用情况相比之前有明显下降，`acquire()` 整体次数大幅减少，最多被调用了 185965 次，比修改前次数减少了一半多，且自旋尝试获取锁的次数均为 0 次。同时 `kmems` 中的锁也不再是最具争用性的 5 个锁。测试 `test1` 和 `test2` 也均通过。
+
+    ![](../Xv6_Lab_Report_2022/src/Lab8-memory_allocator-3.jpg)
+
+2. 在 `xv6` 中执行 `usertests sbrkmuch` 进行测试：
+
+    ![](../Xv6_Lab_Report_2022/src/Lab8-memory_allocator-4.jpg)
+
+3. `./grade-lab-lock kalloctest` 单项测试：
+
+    ![](../Xv6_Lab_Report_2022/src/Lab8-memory_allocator-5.jpg)
 
 #### 分析讨论
+1. 锁争用的显著减少：实验结果显示，通过为每个CPU设置独立的锁与自由列表，锁的争用情况有了明显改善。特别是在 `kalloctest` 测试中，`acquire()` 函数的调用次数大幅减少，自旋尝试获取锁的次数也降为零，这表明大部分内存分配操作在无锁竞争的情况下顺利进行。这一改进使得系统在高并发场景下能够更高效地管理内存分配，避免了不必要的等待和资源浪费。
+
+2. 系统稳定性与兼容性：通过测试结果可以看到，经过修改后的内存分配器在运行 `kalloctest` 和 `usertests sbrkmuch` 测试时均表现出色，所有测试均通过。这表明我们在优化锁机制的同时，没有引入新的不稳定因素，系统能够稳定地运行并兼容现有的用户程序。这对于实际系统应用非常重要，因为它意味着改进不仅提高了性能，还保证了系统的可靠性。
+
+3. 偷取物理页策略的有效性：我们实现了当某个CPU的自由列表为空时，从其他CPU的自由列表中偷取部分内存的策略。在实际测试中，该策略能够有效防止某个CPU因为缺乏空闲内存页而陷入停顿，从而保持系统的整体平衡与性能。这个策略在多核系统中尤其重要，因为不同的CPU可能会因为不同的负载情况而消耗不同数量的内存页，通过这样的动态调整，可以确保各个CPU之间的资源分配更加合理。
+
+4. 进一步优化的空间：尽管本次实验显著减少了锁争用并提升了系统性能，但仍有一些潜在的优化空间。例如，可以进一步优化偷取物理页的算法，使其更加智能化，以减少不必要的偷取操作。此外，可以考虑使用更加精细的锁机制，如读写锁，以进一步提高并发性能。同时，对于多核系统中可能出现的内存局部性问题，也可以进行进一步研究，以进一步提升内存访问的效率。
 
 ### Buffer cache
 
