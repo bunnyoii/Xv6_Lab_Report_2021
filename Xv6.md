@@ -201,13 +201,13 @@ $
 
 ![](../Xv6_Lab_Report_2022/src/Lab1-bootXv6-4.jpg)
 
-这些是 mkfs 在初始文件系统中包含的文件；大多数是可以运行的程序。刚才运行的其中一个程序是 `ls`。
+这些是 `mkfs` 在初始文件系统中包含的文件；大多数是可以运行的程序。刚才运行的其中一个程序是 `ls`。
 
 xv6 没有 `ps` 命令，但如果输入 `Ctrl-p`，内核将打印每个进程的信息。如果现在尝试，会看到两行输出：一行是 `init`，另一行是 `sh`。
 
 ![](../Xv6_Lab_Report_2022/src/Lab1-bootXv6-5.jpg)
 
-要退出 qemu，请输入：`Ctrl-a x`。
+要退出 `qemu`，请输入：`Ctrl-a x`。
 
 ### Sleep
 
@@ -409,6 +409,7 @@ $
 #### 实验结果
 
 ![](../Xv6_Lab_Report_2022/src/Lab1-pingpong-2.jpg)
+
 ![](../Xv6_Lab_Report_2022/src/Lab1-pingpong-3.jpg)
 
 此输出表明：
@@ -908,6 +909,7 @@ if (strlen(path) + 1 + DIRSIZ + 1 > sizeof(buf)) {
     int trace(int);
     ```
     ![](../Xv6_Lab_Report_2022/src/Lab2-system_call_tracking-2.jpg)
+
 3. 接下来，我们需要查看 `user/usys.pl` 文件。该文件中使用 Perl 语言自动生成用户态系统调用接口的汇编语言文件 `usys.S`。因此，我们需要在 `user/usys.pl` 文件中加入以下语句：
 
     ```perl
@@ -950,6 +952,7 @@ if (strlen(path) + 1 + DIRSIZ + 1 > sizeof(buf)) {
     };
    ```
    ![](../Xv6_Lab_Report_2022/src/Lab2-system_call_tracking-8.jpg)
+
 8. 然后可以在 `kernel/sysproc.c` 给出 `sys_trace` 函数的具体实现了，只要把传进来的参数给到现有进程的 `mask` 即可：
     ```c
     uint64
@@ -997,6 +1000,7 @@ if (strlen(path) + 1 + DIRSIZ + 1 > sizeof(buf)) {
     }
     ```
     ![](../Xv6_Lab_Report_2022/src/Lab2-system_call_tracking-6.jpg)
+    
 11. 然后在 `kernel/proc.c` 中 `fork` 函数调用时，添加子进程复制父进程的 `mask` 的代码：
 
     ```c
@@ -1408,7 +1412,9 @@ ugetpid_test: OK
 #### 实验结果
 
 ![](../Xv6_Lab_Report_2022/src/Lab3-print_page_table-5.jpg)
+
 ![](../Xv6_Lab_Report_2022/src/Lab3-print_page_table-4.jpg)
+
 #### 分析讨论
 1. 在本实验中，我们编写了一个函数 `vmprint()`，以便打印 `RISC-V` 页表的内容。通过在 `exec.c` 文件中的适当位置调用该函数，可以有效地输出第一个用户进程（控制台进程）的页表信息，从而帮助我们可视化页表的结构和内容。
     - 函数实现：在 `vmprint()` 函数中，我们通过三重循环遍历三级页目录，每一层页目录都使用 `PTE_V` 位判断页表条目是否有效。当发现有效条目时，我们会递归进入下一层页目录，直到到达最低级页目录。对于最低级页目录中的每个有效条目，我们会输出对应的物理地址。
@@ -1899,7 +1905,7 @@ $ make clean
 
 #### 实验步骤
 
-1. 修改uvmcopy()将父进程的物理页映射到子进程，而不是分配新页。原来uvmcopy()是将虚拟地址[0, sz]这个区间对应的物理内存的数据拷贝到新的物理内存中。现在不需要在这里申请新的物理内存，只需要将页表与父进程的物理内存进行映射就行，同时在子进程和父进程的PTE中清除PTE_W标志，设置RSW标志位。
+1. 修改 `uvmcopy()` 将父进程的物理页映射到子进程，而不是分配新页。原来 `uvmcopy()` 是将虚拟地址 `[0, sz]` 这个区间对应的物理内存的数据拷贝到新的物理内存中。现在不需要在这里申请新的物理内存，只需要将页表与父进程的物理内存进行映射就行，同时在子进程和父进程的 `PTE` 中清除 `PTE_W` 标志，设置 `RSW` 标志位。
 
 ```c
 int
@@ -2048,7 +2054,9 @@ pte_t*          cow_walk(pagetable_t , uint64 );
     
 #### 实验结果
 ![](../Xv6_Lab_Report_2022/src/Lab5-1.jpg)
+
 ![](../Xv6_Lab_Report_2022/src/Lab5-2.jpg)
+
 ![](../Xv6_Lab_Report_2022/src/Lab5-3.jpg)
 
 #### 分析讨论
@@ -2439,14 +2447,51 @@ $ make clean
 
 #### 实验目的
 
+对xv6操作系统中的缓冲区缓存（`buffer cache`）进行优化，以减少多个进程之间对缓冲区缓存锁的争用，从而提升系统的性能和并发能力。通过设计和实现一种更加高效的缓冲区管理机制，使不同进程能够更有效地使用和管理缓冲区，降低锁竞争和减少性能瓶颈。
+
 #### 实验步骤
 
-![](../Xv6_Lab_Report_2022/src/Lab8-buffer_cache-1.jpg)
-![](../Xv6_Lab_Report_2022/src/Lab8-buffer_cache-2.jpg)
-![](../Xv6_Lab_Report_2022/src/Lab8-buffer_cache-3.jpg)
-![](../Xv6_Lab_Report_2022/src/Lab8-buffer_cache-4.jpg)
+1. 在 xv6 中运行 `bcachetest`，输出如下：
+
+    ![](../Xv6_Lab_Report_2022/src/Lab8-buffer_cache-1.jpg)
+
+2. 对 `kernel/buf.h` 中的 `buf` 结构体进行修改。
+    
+    由于将缓冲区管理从双向链表改为哈希表，在哈希表的 `bucket` 中使用了单向链表，因此不再需要 `prev` 字段。此外，为了支持基于时间戳的 `LRU` 算法，添加了 `timestamp` 字段，用于记录缓存块的最后使用时间。
+
+    ![](../Xv6_Lab_Report_2022/src/Lab8-buffer_cache-2.jpg)
+
+3. 修改 `kernel/bio.c` 中的 `bcache` 结构体。
+    
+    根据上文思路，此处添加了 `size` 字段，用于记录已经分配到哈希表的缓存块 `struct buf` 的数量；添加了 `buckets[NBUCKET]` 数组，作为哈希表的 `bucket` 数组，其中 `NBUCKET` 为 `bucket` 的数目，根据指导书此处设置为 `13`；添加 `locks[NBUCKET]` 字段，用于作为每个 `bucket` 对应的锁；添加了 `hashlock` 字段，作为哈希表的全局锁，用于对哈希表整体加锁。
+
+    ![](../Xv6_Lab_Report_2022/src/Lab8-buffer_cache-3.jpg)
+
+4. 修改 `kernel/bio.c` 中的 `binit()` 函数。
+    
+    该函数主要用于缓存块和相关锁的初始化。由于不再使用双向链表，因此相关的代码即可注释掉。此外需要将新增的 `size` 字段，以及哈希表的 `bucket` 数组的锁 `locks[NBUCKET]` 以及哈希表全局锁 `hashlock` 进行初始化。
+    
+5. 对 `kernel/bio.c` 中的 `brelse()` 函数进行修改。
+
+    该函数用于释放缓存块。在原有实现中，当缓存块的引用计数为 `0` 时，会将其移至双向链表的表头，形成一个以表头为最近使用、表尾为最近未使用的 `LRU` 序列，以便 `bget()` 函数查找缓存块。然而，在新的实现中，由于使用基于时间戳的 `LRU` 算法，不再需要使用双向链表，只需更新缓存块的 `timestamp` 字段，记录当前时间。同时，由于缓存块由哈希表管理，锁机制也从全局锁改为针对缓存块所在哈希表 `bucket` 的锁。
+
+6. 修改 `kernel/bio.c` 中的 `bpin()` 和 `bunpin()` 函数。
+    
+    这两个函数的修改比较简单，就是将原本的全局锁替换为缓存块对应的 `bucket` 的锁即可。
+
+7. 修改 `bget()` 函数
+
+    1. 查找缓存块：首先在 `kernel/bio.c` 中修改 `bget()` 函数，改为通过哈希表来管理缓存块。根据 `blockno` 计算出哈希表中对应的 `bucket`，并在该 `bucket` 的链表中查找是否存在对应设备 `dev` 和块号 `blockno` 的缓存块。如果找到，则将其引用计数加1并直接返回。此步骤与原先在双向链表中查找缓存块的操作一致。
+
+    2. 缓存块分配：如果在哈希表 `bucket` 中未找到目标缓存块，且系统中仍有未分配的缓存块，则进行新的缓存块分配。与原实现中所有缓存块初始化时都插入双向链表不同，此处哈希表在初始状态为空，分配的新缓存块需要进行初始化，并插入到对应的 bucket 中。在进行分配时，需要持有 bucket 的锁，并确保分配过程中的线程安全。
+
+    3. 重用缓存块：若所有缓存块已分配完毕，则通过基于时间戳的 `LRU` 算法来选择合适的缓存块进行重用。具体操作是依次遍历哈希表的每个 `bucket`，首先在目标 `bucket`（即 `idx=HASH(blockno)`）中寻找引用计数为 `0` 且时间戳最小的缓存块。如果未找到，则继续遍历后续的 `bucket`，找到合适的缓存块后，将其移至目标 `bucket` 中进行重用。
+
+    4. 加锁机制：为了保证整个过程中缓存块的安全访问，修改 `bget()` 函数中的加锁机制。在查找缓存块时，只需要对当前 `bucket` 加锁。在进行缓存块分配时，由于需要修改全局的 `size` 字段，因此要在此过程中持有全局锁 `lock`，并且在持有 `bucket` 锁的同时，不释放它，以避免其他线程的并发访问。在寻找可重用缓存块时，由于可能需要遍历多个 `bucket`，需要在操作前释放当前的 `bucket` 锁，并获取全局哈希表锁 `hashlock`，以确保在查找重用块时不会发生竞态条件。
 
 #### 实验结果
+
+    ![](../Xv6_Lab_Report_2022/src/Lab8-buffer_cache-4.jpg)
 
 #### 分析讨论
 
