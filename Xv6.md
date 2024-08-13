@@ -2,6 +2,10 @@
 
 2251730 刘淑仪 2024年暑
 
+git仓库：https://github.com/bunnyoii/Xv6_Lab_Report_2022
+
+代码可进不同分支查看。
+
 [TOC]
 
 ## Tools & Guidance
