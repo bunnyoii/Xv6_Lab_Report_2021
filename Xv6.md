@@ -1068,7 +1068,7 @@ usertests starting
 1. 定义一个系统调用的序号。系统调用序号的宏定义在 `kernel/syscall.h` 文件中。在 `kernel/syscall.h` 添加宏定义 `SYS_sysinfo` 如下：
 
     ```c
-    #define SYS_trace  22
+    #define SYS_sysinfo  23
     ```
 2. 在 `user/usys.pl` 文件加入下面的语句：
 
@@ -1145,7 +1145,7 @@ usertests starting
         }
         release(&kmem.lock);
         return num * PGSIZE;
-        }
+    }
 
     ```
     ![](../Xv6_Lab_Report_2022/src/Lab2-sysinfo-2.jpg)
@@ -1180,7 +1180,7 @@ usertests starting
         if (copyout(p->pagetable, addr, (char *)&info, sizeof(info)) < 0)
             return -1;
         return 0;
-        }
+    }
     ```
     ![](../Xv6_Lab_Report_2022/src/Lab2-sysinfo-4.jpg)
 10. 最后在 `user` 目录下添加一个 `sysinfo.c` 用户程序：
@@ -1262,8 +1262,6 @@ $ git fetch
 $ git checkout pgtbl
 $ make clean
 ```
-
-在那之前，暂存上一个实验做出的改动 `git stash`。
 ### Speed up system calls 
 
 #### 实验目的
@@ -1290,7 +1288,7 @@ $ make clean
         release(&p->lock);
         return 0;
     }
-    p->usyscall->pid =  p->pid ; 
+    p->usyscall->pid =  p->pid; 
     ```
     ![](../Xv6_Lab_Report_2022/src/Lab3-speed_up_system_calls-2.jpg)
 3. `kalloc` 函数用于分配物理内存，但我们还需要完成从虚拟地址到物理地址的映射。这一过程需要在 `kernel/proc.c` 文件中的 `proc_pagetable()` 函数中利用 `mappages()` 函数来实现。`proc_pagetable()` 函数用于为进程创建一个用户页表。用户页表用于映射用户进程的虚拟地址到物理地址。在此过程中，还会映射一些特殊页，如 `trampoline` 和 `trapframe`。我们需要在这个函数中添加一个 `usyscall` 页面的映射。
@@ -1540,7 +1538,7 @@ make clean
 `user/call.asm`文件。
 ![](../Xv6_Lab_Report_2022/src/Lab4-RISC_V-1.jpg)
 
-2. 阅读 call.asm 中的 g ， f ，和 main 函数。（参考这些材料：reference page。）
+2. 阅读 `call.asm `中的 `g` ， `f` ，和 `main` 函数。
 回答下列问题：
 
 ##### Q1
@@ -1678,7 +1676,7 @@ printf("x=%d y=%d", 3);
 
 #### 实验步骤
 
-1. 在文件 `kernel/riscv.h` 中添加内联函数 r_fp() 读取栈帧值。
+1. 在文件 `kernel/riscv.h` 中添加内联函数 `r_fp()` 读取栈帧值。
     ![](../Xv6_Lab_Report_2022/src/Lab4-backtrace-1.jpg)
 2. 在 `kernel/printf.c` 文件中编写 `backtrace()` 函数以输出所有栈帧。函数的实现思路如下：
     - 通过调用 `r_fp()` 函数读取寄存器 `s0` 中的当前函数栈帧 `fp`。
@@ -1704,7 +1702,7 @@ printf("x=%d y=%d", 3);
 ![](../Xv6_Lab_Report_2022/src/Lab4-backtrace-9.jpg)
 ![](../Xv6_Lab_Report_2022/src/Lab4-backtrace-10.jpg)
 
-2. 运行 `/grade-traps backtrace` 测试输出。
+2. 运行 `./grade-lab-traps backtrace` 测试输出。
 ![](../Xv6_Lab_Report_2022/src/Lab4-backtrace-11.jpg)
 
 #### 分析讨论
@@ -1862,7 +1860,7 @@ p->passedticks = 0;
 ![](../Xv6_Lab_Report_2022/src/Lab4-alarm-14.jpg)
 ![](../Xv6_Lab_Report_2022/src/Lab4-alarm-15.jpg)
 
-2. ./grade-lab-traps alarmtest 单项测试通过。
+2. `./grade-lab-traps alarmtest` 单项测试通过。
 ![](../Xv6_Lab_Report_2022/src/Lab4-alarm-16.jpg)
 
 #### 分析讨论
@@ -2095,63 +2093,56 @@ $ make clean
 
 #### 实验步骤
 
-1. 给 `thread` 结构一个字段用来保存相关寄存器，直接用 `context` 即可，在 `user/uthread.c` 里添加：
-    ```c
-    // user/uthread.c
-    struct context {
-    uint64 ra;
-    uint64 sp;
+1. user/uthread.c中，新增头文件引用。
 
-    // callee-saved
-    uint64 s0;
-    uint64 s1;
-    uint64 s2;
-    uint64 s3;
-    uint64 s4;
-    uint64 s5;
-    uint64 s6;
-    uint64 s7;
-    uint64 s8;
-    uint64 s9;
-    uint64 s10;
-    uint64 s11;
-    };
-    ```
-2. 在线程结构体 `struct thread` 中添加线程上下文字段 `context`.
-很显然, 上文定义的线程上下文结构体 `struct ctx` 是和线程一一对应的, 应作为线程结构体的一个成员变量.
+```c
+#include "kernel/riscv.h"
+#include "kernel/spinlock.h"
+#include "kernel/param.h"
+#include "kernel/proc.h"
+```
+
+2. `struct thread` 增加成员 `struct context` ，用于线程切换时保存/恢复寄存器信息。此处`struct context` 即 `kernel/proc.h` 中定义的 `struct context`。
     ```c
     struct thread {
         char       stack[STACK_SIZE]; /* the thread's stack */
         int        state;             /* FREE,RUNNING,   RUNNABLE */
-        struct context context;       // 借鉴proc的context
+        struct context threadContext;       // 借鉴proc的context
     };
     ```
-3. 在 `thread_create()` 函数中添加代码，该函数的主要任务是进行线程的初始化操作。具体过程如下：
+    ![](../Xv6_Lab_Report_2022/src/Lab6-Uthread-1.jpg)
+
+3. 修改 `thread_switch` 函数定义。
+    ```c
+    extern void thread_switch(struct context*, struct context*);
+    ```
+
+4. 在 `thread_create()` 函数中添加代码，该函数的主要任务是进行线程的初始化操作。具体过程如下：
     - 首先，在线程数组中找到一个状态为 FREE（未初始化）的线程。
     - 设置该线程的状态为 RUNNABLE，并进行其他初始化操作。
 
     需要特别注意的是，传递给 thread_create() 函数的参数 func 必须记录下来，以便在线程运行时能够执行该函数。此外，线程有独立的栈结构，函数运行时需要在该线程的栈上进行，因此需要初始化线程的栈指针。
 
     在线程调度切换时，必须保存和恢复寄存器状态。这里分别对应的是 ra（返回地址寄存器）和 sp（栈指针寄存器）。在线程初始化时设置这些寄存器的值，确保在后续的调度切换过程中能正确保持线程状态。
-    ![](../Xv6_Lab_Report_2022/src/Lab6-Uthread-1.jpg)
+    ![](../Xv6_Lab_Report_2022/src/Lab6-Uthread-2.jpg)
 
-4. 在 `thread_schedule()` 函数中添加代码。该函数负责用户多线程间的调度，通过函数主动调用进行线程切换。其主要任务是从当前线程在线程数组中的位置开始，寻找一个状态为 `RUNNABLE` 的线程进行运行。这与 `kernel/proc.c` 中的 `scheduler()` 函数非常相似。
+5. 在 `thread_schedule()` 函数中添加代码。该函数负责用户多线程间的调度，通过函数主动调用进行线程切换。其主要任务是从当前线程在线程数组中的位置开始，寻找一个状态为 `RUNNABLE` 的线程进行运行。这与 `kernel/proc.c` 中的 `scheduler()` 函数非常相似。
 
     找到合适的线程后，需要进行线程切换，调用 `thread_switch()` 函数。根据 `user/thread.c` 中的外部声明以及指导书的要求，可以推断出该函数定义在 `user/uthread_switch.S` 中，并用汇编代码实现。其功能类似于 `kernel/swtch.S` 中的 `swtch()` 函数，负责在线程切换时保存和恢复寄存器状态。
 
-    ![](../Xv6_Lab_Report_2022/src/Lab6-Uthread-2.jpg)
+    ![](../Xv6_Lab_Report_2022/src/Lab6-Uthread-3.jpg)
 
-5. 最后，在 `user/uthread_switch.S` 中添加 `thread_switch` 的代码。正如上文所述，该函数的功能与 `kernel/swtch.S` 中的 `swtch` 函数一致。由于 `struct ctx` 与内核中的 `struct context` 结构体的成员相同，因此该函数可以直接复用 `kernel/swtch.S` 中的 `swtch` 代码。
+6. 最后，在 `user/uthread_switch.S` 中添加 `thread_switch` 的代码。正如上文所述，该函数的功能与 `kernel/swtch.S` 中的 `swtch` 函数一致。由于 `struct ctx` 与内核中的 `struct context` 结构体的成员相同，因此该函数可以直接复用 `kernel/swtch.S` 中的 `swtch` 代码。
 
-6. 测试并运行。
+7. 测试并运行。
 
 #### 实验结果
 
 1. 在 `xv6` 中运行 `uthread`:
-![](../Xv6_Lab_Report_2022/src/Lab6-Uthread-3.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab6-Uthread-4.jpg)
 
 2. `./grade-lab-thread uthread` 单项测试:
-![](../Xv6_Lab_Report_2022/src/Lab6-Uthread-4.jpg)
+![](../Xv6_Lab_Report_2022/src/Lab6-Uthread-5.jpg)
 
 #### 分析讨论
 
@@ -2182,7 +2173,7 @@ $ make clean
 ![](../Xv6_Lab_Report_2022/src/Lab6-using_threads-2.jpg)
 
 4. 定义互斥锁数组。
-    根据指导书可知，此处主要通过加互斥锁来解决线程不安全的问题。此处没有选择使用一个互斥锁，这样会导致访问整个哈希表都是串行的。而考虑到对该哈希表，实际上只有对同一 `bucket` 操作时才可能造成数据的丢失，不同 `bucket` 之间是互不影响的，因此此处是构建了一个互斥锁数组，每个 `bucket` 对应一个互斥锁。
+    根据指导书可知，此处主要通过加互斥锁来解决线程不安全的问题。此处没有选择使用一个互斥锁，这样会导致访问整个哈希表都是串行的。而考虑到对该哈希表，实际上只有对同一 `bucket` 操作时才可能造成数据的丢失，不同 `bucket` 之间是互不影响的，因此此处是构建了一个互斥锁数组，每个 `bucket` 对应一个互斥锁。在 `ph.c` 中增加：
     ```c
     pthread_mutex_t locks[NBUCKET]; // lab7-2
     ```
@@ -2220,7 +2211,12 @@ $ make clean
     1. 引入读写锁：在当前实现中，所有访问 `bucket` 的操作都使用了互斥锁。为了进一步提高性能，可以引入读写锁，使得多个线程可以同时进行读操作，而写操作仍然需要独占锁。
     2. 动态调整 `bucket` 数量：根据运行时的负载情况，动态调整 `bucket` 的数量，以优化哈希表的性能。
     3. 性能监控与调优：通过性能监控工具，分析锁的争用情况和系统瓶颈，进一步优化锁的使用和哈希表的结构。
-3. 实验心得：通过本次实验，我深入理解了多线程环境下的数据一致性问题，并通过使用互斥锁成功地实现了一个线程安全的哈希表。实验中遇到的问题和解决方案使我进一步掌握了并行编程的技巧和方法。通过不断优化和调试，我们不仅解决了数据丢失问题，还显著提高了程序的并发性能。这些经验和教训将为我未来的并行编程实践提供宝贵的参考。
+3. 思考题：
+    > Why are there missing keys with 2 threads, but not with 1 thread? Identify a sequence of events with 2 threads that can lead to a key being missing. Submit your sequence with a short explanation in answers-thread.txt
+
+    这里的哈希表就是"数组(bucket)+链表"的经典实现方法. 通过取余确定 bucket, put() 是使用前插法插入键值对， `get()` 遍历 bucket 下的链表找到对应 key 的 entry。而这个实现没有涉及任何锁机制或者 CAS 等线程安全机制，因此线程不安全，多线程插入时会出现数据丢失。
+    该哈希表的线程安全问题是：多个线程同时调用 `put()` 对同一个 `bucket` 进行数据插入时，可能会使得先插入的 `entry` 丢失。具体来讲，假设有 A 和 B 两个线程同时 `put()`，而恰好 `put()` 的参数 `key` 对应到了哈希表的同一 `bucket`。同时假设 A 和 B 都运行到 `put()` 函数的 `insert()` 处，还未进入该函数内部，这就会导致两个线程 `insert()` 的后两个参数是相同的，都是当前 `bucket` 的链表头，如若线程 A 调用 `insert()` 插入完 `entry` 后，切换到线程 B 再调用 `insert()` 插入 `entry`，则会导致线程 A 刚刚插入的 `entry` 丢失。
+4. 实验心得：通过本次实验，我深入理解了多线程环境下的数据一致性问题，并通过使用互斥锁成功地实现了一个线程安全的哈希表。实验中遇到的问题和解决方案使我进一步掌握了并行编程的技巧和方法。通过不断优化和调试，我们不仅解决了数据丢失问题，还显著提高了程序的并发性能。这些经验和教训将为我未来的并行编程实践提供宝贵的参考。
 
 ### Barrier
 
@@ -2491,7 +2487,11 @@ $ make clean
 
 #### 实验结果
 
-    ![](../Xv6_Lab_Report_2022/src/Lab8-buffer_cache-4.jpg)
+1. `bcachetest` 测试
+![](../Xv6_Lab_Report_2022/src/Lab8-buffer_cache-4.jpg)
+
+2. `./grade-lab-lock bcachetest` 测试
+![](../Xv6_Lab_Report_2022/src/Lab8-buffer_cache-5.jpg)
 
 #### 分析讨论
 
