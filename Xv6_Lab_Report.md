@@ -1051,6 +1051,7 @@ if (strlen(path) + 1 + DIRSIZ + 1 > sizeof(buf)) {
    #define SYS_trace  22
    ```
    ![](../Xv6_Lab_Report_2022/src/Lab2-system_call_tracking-4.jpg)
+
 2. 官方已提供了用户态的 `trace` 函数（ `user/trace.c` ），因此我们只需在 `user/user.h` 文件中声明用户态可以调用 `trace` 系统调用。然而，关于该系统调用的参数和返回值的类型，我们需要进一步确认。
 
     为了明确这些类型，我们需要查看 `trace.c` 文件。文件中有一句代码 `trace(atoi(argv[1])) < 0` ，显示 `trace` 函数传入的是一个数字，并且与 0 进行比较。结合实验提示，可以确定传入参数的类型为 `int`，并且推测返回值类型也是 `int`。
@@ -1069,9 +1070,10 @@ if (strlen(path) + 1 + DIRSIZ + 1 > sizeof(buf)) {
     entry("trace");
     ```
     ![](../Xv6_Lab_Report_2022/src/Lab2-system_call_tracking-3.jpg)
+
 4. 执行 `ecall` 指令后会跳转至 `kernel/syscall.c` 文件中的 `syscall` 函数处，并执行该函数。`syscall` 函数的源码如下：
    
-   ```c
+    ```c
     void syscall(void){
         int num;
         struct proc *p = myproc();
@@ -1084,7 +1086,8 @@ if (strlen(path) + 1 + DIRSIZ + 1 > sizeof(buf)) {
         p->trapframe->a0 = -1;
         }
     }
-   ```
+    ```
+
 5. 接下来，`p->trapframe->a0 = syscalls[num]();` 语句通过调用 `syscalls[num]();` 函数，并将返回值保存在 `a0` 寄存器中。`syscalls[num]();` 函数在当前文件中定义，调用具体的系统调用命令。把新增的 `trace` 系统调用添加到函数指针数组 `*syscalls[]` 上：
 
     ```c
@@ -1093,10 +1096,13 @@ if (strlen(path) + 1 + DIRSIZ + 1 > sizeof(buf)) {
         [SYS_trace]   sys_trace,
     };
     ```
+
 6. 在文件开头给内核态的系统调用 `trace` 加上声明，在 `kernel/syscall.c` 加上：
+   
     ```c
     extern uint64 sys_trace(void);
     ```
+
 7. 根据提示， `trace` 系统调用应该有一个参数，一个整数“mask(掩码)”，其指定要跟踪的系统调用。所以，在 `kernel/proc.h` 文件的 `proc` 结构体中，新添加一个变量 `mask` ，使得每一个进程都有自己的 `mask` ，即要跟踪的系统调用。
     ```c
     struct proc {
@@ -1122,7 +1128,8 @@ if (strlen(path) + 1 + DIRSIZ + 1 > sizeof(buf)) {
     }
     ```
     ![](../Xv6_Lab_Report_2022/src/Lab2-system_call_tracking-5.jpg)
-9. 接下来，我们需要实现输出功能。由于 RISCV 的 C 规范是将返回值放在 a0 寄存器中，所以在调用系统调用时，我们只需判断是否为 mask 规定的输出函数，如果是，就进行输出操作。首先，在 `kernel/proc.h` 文件中，`proc` 结构体中的 `name` 字段是线程的名字，不是函数调用的函数名称。因此，我们需要在 `kernel/syscall.c` 中定义一个数组来存储系统调用的名字。这里需要注意，系统调用的名字必须按顺序排列，第一个为空字符串。当然，也可以去掉第一个空字符串，但在取值时需要将索引减一，因为系统调用号是从 1 开始的。
+
+9.  接下来，我们需要实现输出功能。由于 RISCV 的 C 规范是将返回值放在 a0 寄存器中，所以在调用系统调用时，我们只需判断是否为 `mask` 规定的输出函数，如果是，就进行输出操作。首先，在 `kernel/proc.h` 文件中，`proc` 结构体中的 `name` 字段是线程的名字，不是函数调用的函数名称。因此，我们需要在 `kernel/syscall.c` 中定义一个数组来存储系统调用的名字。这里需要注意，系统调用的名字必须按顺序排列，第一个为空字符串。当然，也可以去掉第一个空字符串，但在取值时需要将索引减一，因为系统调用号是从 1 开始的。
 
     ```c
     static char *syscall_names[] = {
@@ -1132,6 +1139,7 @@ if (strlen(path) + 1 + DIRSIZ + 1 > sizeof(buf)) {
         "open", "write", "mknod", "unlink", "link", 
         "mkdir", "close", "trace"};
     ```
+
 10. 可以在 `kernel/syscall.c` 文件的 `syscall` 函数中添加打印系统调用情况的语句。mask 是按位判断的，因此需要使用按位运算。进程序号可以通过 `p->pid` 获取，函数名称可以从我们刚刚定义的数组 `syscall_names[num]` 获取，返回值则是 `p->trapframe->a0`。以下是更新后的 `syscall` 函数代码：
     ```c
     void
@@ -1168,27 +1176,18 @@ if (strlen(path) + 1 + DIRSIZ + 1 > sizeof(buf)) {
     ```
     ![](../Xv6_Lab_Report_2022/src/Lab2-system_call_tracking-7.jpg)
 12. 最后在 `Makefile` 的 `UPROGS` 中添加 `$U/_trace\` 。
+
     ![](../Xv6_Lab_Report_2022/src/Lab2-system_call_tracking-1.jpg)
-13. 结果验证。
+13. 编译并进行测试。
 
 #### 实验结果
 
 ```bash
 $ trace 32 grep hello README
-3: syscall read -> 1023
-3: syscall read -> 966
-3: syscall read -> 70
-3: syscall read -> 0
+...
 $
 $ trace 2147483647 grep hello README
-4: syscall trace -> 0
-4: syscall exec -> 3
-4: syscall open -> 3
-4: syscall read -> 1023
-4: syscall read -> 966
-4: syscall read -> 70
-4: syscall read -> 0
-4: syscall close -> 0
+...
 $
 $ grep hello README
 $
@@ -1197,7 +1196,8 @@ usertests starting
 ```
 ![](../Xv6_Lab_Report_2022/src/Lab2-system_call_tracking-9.jpg)
 
-`./grade-lab-syscall trace`
+`./grade-lab-syscall trace` 单项测试
+
 ![](../Xv6_Lab_Report_2022/src/Lab2-system_call_tracking-10.jpg)
 
 #### 分析讨论
@@ -1245,7 +1245,7 @@ usertests starting
     ```c
     extern uint64 sys_sysinfo(void);
     ```
-5. 在 `kernel/syscall.c` 中函数指针数组新增 `sys_trace` ：
+5. 在 `kernel/syscall.c` 中函数指针数组新增 `sysinfo` ：
    
    ```c
    static char *syscall_names[] = {
@@ -1256,7 +1256,7 @@ usertests starting
     "mkdir", "close", "trace", "sysinfo"};
    ```
    ![](../Xv6_Lab_Report_2022/src/Lab2-sysinfo-1.jpg)
-6. 在进程中已经保存了当前进程的状态，因此我们可以直接遍历所有进程，判断它们的状态是否为 UNUSED 并进行计数。根据 proc 结构体的定义，访问进程状态时必须加锁。我们在 kernel/proc.c 中新增了一个名为 nproc 的函数，用于获取可用进程的数量，代码如下：
+6. 在进程中已经保存了当前进程的状态，因此我们可以直接遍历所有进程，判断它们的状态是否为 `UNUSED` 并进行计数。根据 `proc` 结构体的定义，访问进程状态时必须加锁。我们在 `kernel/proc.c` 中新增了一个名为 `nproc` 的函数，用于获取可用进程的数量，代码如下：
     ```c
     uint64
     nproc(void)
@@ -1281,7 +1281,7 @@ usertests starting
     }
     ```
     ![](../Xv6_Lab_Report_2022/src/Lab2-sysinfo-3.jpg)
-7. 在 `kernel/kalloc.c` 中添加一个 `free_mem` 函数，用于收集可用内存的数量。参考 `kernel/kalloc.c` 文件中的 `kalloc()` 和 `kfree()` 函数可以看出，内核通过 `kmem.freelist` 链表维护未使用的内存。链表的每个节点对应一个页表大小（PGSIZE）。分配内存时，从链表头部取走一个页表大小的内存；释放内存时，使用头插法将其插入到该链表。因此，计算未使用内存的字节数 `freemem` 只需遍历该链表，得到链表节点数，并与页表大小（4KB）相乘即可。
+7. 在 `kernel/kalloc.c` 中添加一个 `free_mem` 函数，用于收集可用内存的数量。参考 `kernel/kalloc.c` 文件中的 `kalloc()` 和 `kfree()` 函数可以看出，内核通过 `kmem.freelist` 链表维护未使用的内存。链表的每个节点对应一个页表大小（`PGSIZE`）。分配内存时，从链表头部取走一个页表大小的内存；释放内存时，使用头插法将其插入到该链表。因此，计算未使用内存的字节数 `freemem` 只需遍历该链表，得到链表节点数，并与页表大小（4KB）相乘即可。
 
     ```c
     // Return the number of bytes of free memory
@@ -1302,7 +1302,7 @@ usertests starting
 
     ```
     ![](../Xv6_Lab_Report_2022/src/Lab2-sysinfo-2.jpg)
-8. 在 kernel/defs.h 中添加上述两个新增函数的声明：
+8. 在 `kernel/defs.h` 中添加上述两个新增函数的声明：
     ```c
     // kalloc.c
     ...
@@ -1380,23 +1380,26 @@ sysinfotest: OK
 ```
 ![](../Xv6_Lab_Report_2022/src/Lab2-sysinfo-6.jpg)
 
-```bash
-./grade-lab-syscall sysinfo
-```
+`./grade-lab-syscall sysinfo` 单项测试
+
 ![](../Xv6_Lab_Report_2022/src/Lab2-sysinfo-7.jpg)
 
 #### 分析讨论
 
 1. 问题与解决方案：
 
-    问题：在实现 sysinfo 系统调用时，出现了未定义引用 sysinfo 的链接错误。
-    解决方案：确保在 user/user.h 中正确声明了 sysinfo 函数，并在 user/usys.pl 文件中正确添加了条目 entry("sysinfo")。
+    > 在实现 `sysinfo` 系统调用时，出现了未定义引用 `sysinfo` 的链接错误。
+    
+    确保在 `user/user.h` 中正确声明了 `sysinfo` 函数，并在 `user/usys.pl` 文件中正确添加了条目 `entry("sysinfo")`。
 
-    问题：在获取可用内存大小时，访问链表节点可能导致竞争条件。
-    解决方案：在遍历 `kmem.freelist` 链表时，加锁以确保线程安全。
+    > 在获取可用内存大小时，访问链表节点可能导致竞争条件。
+    
+    在遍历 `kmem.freelist` 链表时，加锁以确保线程安全。
 
-    问题：在获取进程数量时，遍历进程表可能导致竞争条件。
-    解决方案：在访问进程状态时，加锁以确保线程安全。
+    > 在获取进程数量时，遍历进程表可能导致竞争条件。
+    
+    在访问进程状态时，加锁以确保线程安全。
+
 2. 实验心得：通过本次实验，我成功实现了 `sysinfo` 系统调用，深入理解了系统调用的实现过程、锁机制在内核编程中的重要性，以及如何调试和解决实际编程中的问题。
 
 ## Lab3 : Page tables
@@ -1419,9 +1422,9 @@ $ make clean
 
 #### 实验目的
 
-某些操作系统（例如 Linux）通过在用户空间和内核之间共享一个只读区域的数据来加速某些系统调用。这消除了在执行这些系统调用时进入内核的需求。为了学习如何将映射插入页表，第一个任务是在 xv6 中为 `getpid()` 系统调用实现此优化。
+某些操作系统（例如 Linux）通过在用户空间和内核之间共享一个只读区域的数据来加速某些系统调用。这消除了在执行这些系统调用时进入内核的需求。为了学习如何将映射插入页表，第一个任务是在 `xv6` 中为 `getpid()` 系统调用实现此优化。
 
-当每个进程创建时，在 USYSCALL（在 `memlayout.h` 中定义的一个虚拟地址）处映射一个只读页面。在该页面的开始位置存储一个 `struct usyscall`（也在 `memlayout.h` 中定义），并将其初始化为存储当前进程的 PID。对于本实验，用户空间侧已经提供了 `ugetpid()`，并且将自动使用 USYSCALL 映射。
+当每个进程创建时，在 `USYSCALL`（在 `memlayout.h` 中定义的一个虚拟地址）处映射一个只读页面。在该页面的开始位置存储一个 `struct usyscall`（也在 `memlayout.h` 中定义），并将其初始化为存储当前进程的 `PID`。对于本实验，用户空间侧已经提供了 `ugetpid()`，并且将自动使用 `USYSCALL` 映射。
 
 #### 实验步骤
 
@@ -1433,7 +1436,7 @@ $ make clean
     ...
     ```
     ![](../Xv6_Lab_Report_2022/src/Lab3-speed_up_system_calls-1.jpg)
-2. 配成功后，将当前进程的 pid 存入 usyscall 页面的开始处：
+2. 配成功后，将当前进程的 `pid` 存入 `usyscall` 页面的开始处：
 
     ```c
     if((p->usyscall = (struct usyscall *)kalloc()) == 0){
@@ -1482,9 +1485,9 @@ ugetpid_test starting
 ugetpid_test: OK
 ```
 ![](../Xv6_Lab_Report_2022/src/Lab3-speed_up_system_calls-6.jpg)
-```bash
-./grade-lab-pgtbl ugetpid
-```
+
+`./grade-lab-pgtbl ugetpid` 单项测试
+
 ![](../Xv6_Lab_Report_2022/src/Lab3-speed_up_system_calls-7.jpg)
 
 #### 分析讨论
@@ -1503,20 +1506,20 @@ ugetpid_test: OK
 
     - 页表映射问题：在实现 `mappages` 函数时，最初没有正确设置页面权限，导致 `usyscall` 页面无法正确映射。通过检查页表权限设置，我们确保了 `usyscall` 页面具有只读权限，从而解决了映射问题。
 
-2. 实验心得：在本次实验中，通过实现将 usyscall 页面映射到用户空间并优化 getpid() 系统调用，我们深入了解了如何在 xv6 操作系统中处理虚拟地址和物理地址的映射。这不仅提升了系统调用的效率，还加深了我们对操作系统内核机制的理解。
+2. 实验心得：在本次实验中，通过实现将 `usyscall` 页面映射到用户空间并优化 `getpid()` 系统调用，我们深入了解了如何在 `xv6` 操作系统中处理虚拟地址和物理地址的映射。这不仅提升了系统调用的效率，还加深了我们对操作系统内核机制的理解。
 
 ### Print a page table
 
 #### 实验目的
 
-为了帮助可视化 RISC-V 页表，并且可能有助于未来的调试，该项目将需要编写一个函数来打印页表的内容。定义一个名为 `vmprint()` 的函数。它应该接收一个 `pagetable_t` 参数，并按照下面描述的格式打印该页表。在 `exec.c` 中，在 `return argc` 之前插入 `if(p->pid==1) vmprint(p->pagetable)` 语句，以打印第一个进程的页表，不输出无效的 PTE。
+为了帮助可视化 RISC-V 页表，并且可能有助于未来的调试，该项目将需要编写一个函数来打印页表的内容。定义一个名为 `vmprint()` 的函数。它应该接收一个 `pagetable_t` 参数，并按照下面描述的格式打印该页表。在 `exec.c` 中，在 `return argc` 之前插入 `if(p->pid==1) vmprint(p->pagetable)` 语句，以打印第一个进程的页表，不输出无效的 `PTE`。
 
 #### 实验步骤
 
 1. 在 `kernel/vm.c` 中编写函数 `vmprint()`。可以参考 `freewalk()` 函数的实现。对于输出，可以采用循环和递归两种方式实现：
 
     - 循环实现：使用三重循环遍历三级页目录。
-    - 递归实现：与 `freewalk()` 函数相似，通过检查 `(PTE_R | PTE_W | PTE_X) == 0` 来判断是否不是最低级页目录。如果上两级页目录的 PTE 索引到的内容是下一级页目录的 PTE，则这些 PTE 应该均不可读写执行。而最低级页目录的 PTE 索引到的是一个页表，其内容应满足读写执行的条件之一。根据这个条件，可以作为递归的出口。
+    - 递归实现：与 `freewalk()` 函数相似，通过检查 `(PTE_R | PTE_W | PTE_X) == 0` 来判断是否不是最低级页目录。如果上两级页目录的 `PTE` 索引到的内容是下一级页目录的 `PTE`，则这些 `PTE` 应该均不可读写执行。而最低级页目录的 `PTE` 索引到的是一个页表，其内容应满足读写执行的条件之一。根据这个条件，可以作为递归的出口。
     这里实现了循环的方法。
 
     ```c
@@ -1567,6 +1570,7 @@ ugetpid_test: OK
 ![](../Xv6_Lab_Report_2022/src/Lab3-print_page_table-4.jpg)
 
 #### 分析讨论
+
 1. 在本实验中，我们编写了一个函数 `vmprint()`，以便打印 `RISC-V` 页表的内容。通过在 `exec.c` 文件中的适当位置调用该函数，可以有效地输出第一个用户进程（控制台进程）的页表信息，从而帮助我们可视化页表的结构和内容。
     - 函数实现：在 `vmprint()` 函数中，我们通过三重循环遍历三级页目录，每一层页目录都使用 `PTE_V` 位判断页表条目是否有效。当发现有效条目时，我们会递归进入下一层页目录，直到到达最低级页目录。对于最低级页目录中的每个有效条目，我们会输出对应的物理地址。
     - 代码插入位置：我们选择在 `exec` 函数的 `return argc` 之前插入 `if(p->pid==1) vmprint(p->pagetable)`，目的是打印第一个用户进程（即控制台进程）的页表。通过这一修改，可以确保我们在 `xv6` 启动时获得页表的输出信息。
