@@ -593,7 +593,7 @@ $
 
 1. 创建源文件：
 
-    在user目录下，创建一个名为primes.c的文件。在primes.c中，编写程序以实现功能。其实现原理如下：
+    在 `user` 目录下，创建一个名为 `primes.c`的文件。在 `primes.c` 中，编写程序以实现功能。其实现原理如下：
 
     - 定义常量`READEND`、`WRITEEND`、`ERROREND`，分别表示进程自己独立的文件描述符fd，标准输入（0）、标准输出（1）、标准错误（2）。
     - 使用`pipe(p)`创建一个管道p，将用于存放2到35之间的所有数字。
@@ -649,7 +649,6 @@ int main(int argc, char *argv[]) {
     }
     exit(0);
 }
-
 ```
 2. 父进程：
     - 创建一个管道`p`。
@@ -694,6 +693,7 @@ prime 31
 $
 ```
 ![](../Xv6_Lab_Report_2022/src/Lab1-primes-3.jpg)
+
 ![](../Xv6_Lab_Report_2022/src/Lab1-primes-4.jpg)
 
 #### 分析讨论
@@ -898,9 +898,9 @@ if (strlen(path) + 1 + DIRSIZ + 1 > sizeof(buf)) {
 
 #### 实验步骤
 
-1. 创建 xargs.c 文件：在 user 目录下创建一个名为 xargs.c 的文件。
+1. 创建 `xargs.c` 文件：在 `user` 目录下创建一个名为 `xargs.c` 的文件。
 
-2. 编写程序代码：编写 xargs.c 文件中的程序，以实现以下功能：
+2. 编写程序代码：编写 `xargs.c` 文件中的程序，以实现以下功能：
     - 从标准输入读取命令和参数：程序从标准输入读取用户输入的命令和参数。
     - 解析命令和参数：将输入的字符串分割成多个参数，每个参数都是一个独立的字符串。
     - 执行命令：创建一个新的进程来执行用户输入的命令，通过调用 fork 和 exec 函数实现。
@@ -968,9 +968,9 @@ if (strlen(path) + 1 + DIRSIZ + 1 > sizeof(buf)) {
 
 ![](../Xv6_Lab_Report_2022/src/Lab1-xargs-1.jpg)
 
-3. 修改 Makefile：在 Makefile 的 UPROGS 中添加 $U/_xargs。
+3. 修改 `Makefile`：在 `Makefile` 的 `UPROGS` 中添加 `$U/_xargs\`。
 
-4. 编译并测试程序：在 xv6 shell 中测试运行 xargs 程序，并使用 ./grade-lab-util xargs 进行单元测试。
+4. 编译并测试程序：在 xv6 shell 中测试运行 `xargs` 程序，并使用 `./grade-lab-util xargs` 进行单元测试。
 
 #### 实验结果
 1. 运行 `sh < xargstest.sh`：
