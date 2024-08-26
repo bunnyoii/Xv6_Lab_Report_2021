@@ -2,7 +2,7 @@
 
 2251730 刘淑仪 2024年暑
 
-git仓库：https://github.com/bunnyoii/Xv6_Lab_Report_2022
+git仓库：https://github.com/bunnyoii/Xv6_Lab_Report_2021
 
 代码可进不同分支查看。
 
@@ -167,7 +167,7 @@ git仓库：https://github.com/bunnyoii/Xv6_Lab_Report_2022
 
 2. 检查WSL2要求：确认Windows版本是否符合要求。按下 Win+R 打开运行窗口，输入 "winver" 并检查 Windows 版本，确保版本号大于 1903。
 
-![](../Xv6_Lab_Report_2022/src/Tools-5.jpg)
+![](../Xv6_Lab_Report_2021/src/Tools-5.jpg)
 
 3. 启用虚拟化命令：
 
@@ -184,7 +184,7 @@ dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /nores
 - `/all` ：启用功能及其所有依赖项。
 - `/norestart` ：不在启用功能后立即重启计算机。    
 
-![](../Xv6_Lab_Report_2022/src/Tools-6.jpg)
+![](../Xv6_Lab_Report_2021/src/Tools-6.jpg)
 
 4. 下载X64的<u>WSL2 Linux内核升级包</u>并安装，将WSL的默认版本设置为WSL2：
 
@@ -194,7 +194,7 @@ dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /nores
 wsl --set-default-version 2
 ```
 
-![](../Xv6_Lab_Report_2022/src/Tools-7.jpg)
+![](../Xv6_Lab_Report_2021/src/Tools-7.jpg)
 
 5. 安装Ubuntu：
 
@@ -231,8 +231,8 @@ $ sudo apt-get install git build-essential gdb-multiarch qemu-system-misc
 gcc-riscv64-linux-gnu binutils-riscv64-linux-gnu
 ```
 
-![](../Xv6_Lab_Report_2022/src/Tools-1.jpg)
-![](../Xv6_Lab_Report_2022/src/Tools-2.jpg)
+![](../Xv6_Lab_Report_2021/src/Tools-1.jpg)
+![](../Xv6_Lab_Report_2021/src/Tools-2.jpg)
 
 #### 测试安装
 
@@ -240,13 +240,13 @@ gcc-riscv64-linux-gnu binutils-riscv64-linux-gnu
 $ qemu-system-riscv64 --version
 ```
 
-![](../Xv6_Lab_Report_2022/src/Tools-3.jpg)
+![](../Xv6_Lab_Report_2021/src/Tools-3.jpg)
 
 ```bash
 $ riscv64-linux-gnu-gcc --version
 ```
 
-![](../Xv6_Lab_Report_2022/src/Tools-4.jpg)
+![](../Xv6_Lab_Report_2021/src/Tools-4.jpg)
 
 #### 编译内核
 
@@ -263,7 +263,7 @@ $ sudo nano /etc/apt/sources.list
 $ sudo apt-get update
 ```
 
-![](../Xv6_Lab_Report_2022/src/Tools-8.jpg)
+![](../Xv6_Lab_Report_2021/src/Tools-8.jpg)
 
 ### Guidance
 
@@ -317,7 +317,7 @@ QEMU有一个“监视器”，可以让你查询仿真机器的状态。你可�
     Switched to a new branch 'util'
     ```
 
-![](../Xv6_Lab_Report_2022/src/Lab1-bootXv6-1.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab1-bootXv6-1.jpg)
 
 xv6-labs-2021 仓库与书中的 xv6-riscv 略有不同，主要是增加了一些文件。相关信息可以查看` git `日志：`$ git log`
 
@@ -347,18 +347,18 @@ hart 1 starting
 init: starting sh
 $ 
 ```
-![](../Xv6_Lab_Report_2022/src/Lab1-bootXv6-2.jpg)
-![](../Xv6_Lab_Report_2022/src/Lab1-bootXv6-3.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab1-bootXv6-2.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab1-bootXv6-3.jpg)
 
 如果在提示符下输入 `ls`，输出应类似于以下内容：
 
-![](../Xv6_Lab_Report_2022/src/Lab1-bootXv6-4.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab1-bootXv6-4.jpg)
 
 这些是 `mkfs` 在初始文件系统中包含的文件；大多数是可以运行的程序。刚才运行的其中一个程序是 `ls`。
 
 xv6 没有 `ps` 命令，但如果输入 `Ctrl-p`，内核将打印每个进程的信息。如果现在尝试，会看到两行输出：一行是 `init`，另一行是 `sh`。
 
-![](../Xv6_Lab_Report_2022/src/Lab1-bootXv6-5.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab1-bootXv6-5.jpg)
 
 要退出 `qemu`，请输入：`Ctrl-a x`。
 
@@ -415,7 +415,7 @@ xv6 没有 `ps` 命令，但如果输入 `Ctrl-p`，内核将打印每个进程�
 
     - 打开 Makefile：`$ vim Makefile`
     - 在 Makefile 中找到名为 `UPROGS` 的行，这是一个定义用户程序的变量。在 `UPROGS` 行中，添加 `sleep` 程序的目标名称：`$U/_sleep\`。
-    ![](../Xv6_Lab_Report_2022/src/Lab1-sleep-1.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab1-sleep-1.jpg)
 
 4. 编译并测试程序
     
@@ -463,7 +463,7 @@ $
 
 如果程序在以下情况下暂停，则解决方案是正确的 如上所示运行。 运行以查看是否确实通过了 睡眠测试。
 
-![](../Xv6_Lab_Report_2022/src/Lab1-sleep-2.gif)
+![](../Xv6_Lab_Report_2021/src/Lab1-sleep-2.gif)
 
 #### 分析讨论
 
@@ -537,7 +537,7 @@ $
     }
     ```
 
-![](../Xv6_Lab_Report_2022/src/Lab1-pingpong-1.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab1-pingpong-1.jpg)
 
 2. 更新 `Makefile`：
 
@@ -561,9 +561,9 @@ $
 
 #### 实验结果
 
-![](../Xv6_Lab_Report_2022/src/Lab1-pingpong-2.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab1-pingpong-2.jpg)
 
-![](../Xv6_Lab_Report_2022/src/Lab1-pingpong-3.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab1-pingpong-3.jpg)
 
 此输出表明：
 
@@ -587,7 +587,7 @@ $
 
 2. 使用管道和 fork 来建立管道。第一个进程将数字 2 到 35 送入管道。对于每一个质数，应将安排创建一个进程，通过管道从左邻右舍读取数据，并通过另一个管道向右邻右舍写入数据。由于 xv6 的文件描述符和进程数量有限，第一个进程可以在 35 处停止。
 
-![](../Xv6_Lab_Report_2022/src/Lab1-primes-1.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab1-primes-1.jpg)
 
 #### 实验步骤
 
@@ -671,7 +671,7 @@ int main(int argc, char *argv[]) {
         - 新的子进程递归调用`filter`函数继续筛选下一个素数，直到管道中没有数可读。
 4. 添加到Makefile：将程序以`$U/_primes`的形式，添加到`Makefile`的`UPROGS`中。
 
-![](../Xv6_Lab_Report_2022/src/Lab1-primes-2.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab1-primes-2.jpg)
 
 #### 实验结果
 ```bash
@@ -692,9 +692,9 @@ prime 29
 prime 31
 $
 ```
-![](../Xv6_Lab_Report_2022/src/Lab1-primes-3.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab1-primes-3.jpg)
 
-![](../Xv6_Lab_Report_2022/src/Lab1-primes-4.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab1-primes-4.jpg)
 
 #### 分析讨论
 
@@ -818,7 +818,7 @@ $
     }
     ```
 
-    ![](../Xv6_Lab_Report_2022/src/Lab1-find-1.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab1-find-1.jpg)
 
     - fmtname函数：
         - 功能：从路径中提取文件名。它通过查找路径中最后一个斜杠后的部分来获取文件名。
@@ -858,8 +858,8 @@ $ find . b
 ./a/b
 $ 
 ```
-![](../Xv6_Lab_Report_2022/src/Lab1-find-2.jpg)
-![](../Xv6_Lab_Report_2022/src/Lab1-find-3.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab1-find-2.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab1-find-3.jpg)
 
 程序输出符合预期，成功查找到目标文件并打印其路径。
 
@@ -966,7 +966,7 @@ if (strlen(path) + 1 + DIRSIZ + 1 > sizeof(buf)) {
     }
     ```
 
-![](../Xv6_Lab_Report_2022/src/Lab1-xargs-1.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab1-xargs-1.jpg)
 
 3. 修改 `Makefile`：在 `Makefile` 的 `UPROGS` 中添加 `$U/_xargs\`。
 
@@ -985,9 +985,9 @@ if (strlen(path) + 1 + DIRSIZ + 1 > sizeof(buf)) {
     ```
     实际输出：
 
-    ![](../Xv6_Lab_Report_2022/src/Lab1-xargs-2.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab1-xargs-2.jpg)
 2. 运行 `./grade-lab-util xargs`：
-![](../Xv6_Lab_Report_2022/src/Lab1-xargs-3.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab1-xargs-3.jpg)
 
 
 #### 分析讨论
@@ -1050,7 +1050,7 @@ if (strlen(path) + 1 + DIRSIZ + 1 > sizeof(buf)) {
    ```c
    #define SYS_trace  22
    ```
-   ![](../Xv6_Lab_Report_2022/src/Lab2-system_call_tracking-4.jpg)
+   ![](../Xv6_Lab_Report_2021/src/Lab2-system_call_tracking-4.jpg)
 
 2. 官方已提供了用户态的 `trace` 函数（ `user/trace.c` ），因此我们只需在 `user/user.h` 文件中声明用户态可以调用 `trace` 系统调用。然而，关于该系统调用的参数和返回值的类型，我们需要进一步确认。
 
@@ -1062,14 +1062,14 @@ if (strlen(path) + 1 + DIRSIZ + 1 > sizeof(buf)) {
     // system calls
     int trace(int);
     ```
-    ![](../Xv6_Lab_Report_2022/src/Lab2-system_call_tracking-2.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab2-system_call_tracking-2.jpg)
 
 3. 接下来，我们需要查看 `user/usys.pl` 文件。该文件中使用 Perl 语言自动生成用户态系统调用接口的汇编语言文件 `usys.S`。因此，我们需要在 `user/usys.pl` 文件中加入以下语句：
 
     ```perl
     entry("trace");
     ```
-    ![](../Xv6_Lab_Report_2022/src/Lab2-system_call_tracking-3.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab2-system_call_tracking-3.jpg)
 
 4. 执行 `ecall` 指令后会跳转至 `kernel/syscall.c` 文件中的 `syscall` 函数处，并执行该函数。`syscall` 函数的源码如下：
    
@@ -1110,7 +1110,7 @@ if (strlen(path) + 1 + DIRSIZ + 1 > sizeof(buf)) {
         int tracemask;               // Mask
     };
    ```
-   ![](../Xv6_Lab_Report_2022/src/Lab2-system_call_tracking-8.jpg)
+   ![](../Xv6_Lab_Report_2021/src/Lab2-system_call_tracking-8.jpg)
 
 8. 然后可以在 `kernel/sysproc.c` 给出 `sys_trace` 函数的具体实现了，只要把传进来的参数给到现有进程的 `mask` 即可：
     ```c
@@ -1127,7 +1127,7 @@ if (strlen(path) + 1 + DIRSIZ + 1 > sizeof(buf)) {
         return 0;
     }
     ```
-    ![](../Xv6_Lab_Report_2022/src/Lab2-system_call_tracking-5.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab2-system_call_tracking-5.jpg)
 
 9.  接下来，我们需要实现输出功能。由于 RISCV 的 C 规范是将返回值放在 a0 寄存器中，所以在调用系统调用时，我们只需判断是否为 `mask` 规定的输出函数，如果是，就进行输出操作。首先，在 `kernel/proc.h` 文件中，`proc` 结构体中的 `name` 字段是线程的名字，不是函数调用的函数名称。因此，我们需要在 `kernel/syscall.c` 中定义一个数组来存储系统调用的名字。这里需要注意，系统调用的名字必须按顺序排列，第一个为空字符串。当然，也可以去掉第一个空字符串，但在取值时需要将索引减一，因为系统调用号是从 1 开始的。
 
@@ -1160,7 +1160,7 @@ if (strlen(path) + 1 + DIRSIZ + 1 > sizeof(buf)) {
         }
     }
     ```
-    ![](../Xv6_Lab_Report_2022/src/Lab2-system_call_tracking-6.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab2-system_call_tracking-6.jpg)
     
 11. 然后在 `kernel/proc.c` 中 `fork` 函数调用时，添加子进程复制父进程的 `mask` 的代码：
 
@@ -1174,10 +1174,10 @@ if (strlen(path) + 1 + DIRSIZ + 1 > sizeof(buf)) {
     np->trapframe->a0 = 0;
     ...
     ```
-    ![](../Xv6_Lab_Report_2022/src/Lab2-system_call_tracking-7.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab2-system_call_tracking-7.jpg)
 12. 最后在 `Makefile` 的 `UPROGS` 中添加 `$U/_trace\` 。
 
-    ![](../Xv6_Lab_Report_2022/src/Lab2-system_call_tracking-1.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab2-system_call_tracking-1.jpg)
 13. 编译并进行测试。
 
 #### 实验结果
@@ -1194,11 +1194,11 @@ $
 $ trace 2 usertests forkforkfork
 usertests starting
 ```
-![](../Xv6_Lab_Report_2022/src/Lab2-system_call_tracking-9.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab2-system_call_tracking-9.jpg)
 
 `./grade-lab-syscall trace` 单项测试
 
-![](../Xv6_Lab_Report_2022/src/Lab2-system_call_tracking-10.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab2-system_call_tracking-10.jpg)
 
 #### 分析讨论
 
@@ -1255,7 +1255,7 @@ usertests starting
     "open", "write", "mknod", "unlink", "link", 
     "mkdir", "close", "trace", "sysinfo"};
    ```
-   ![](../Xv6_Lab_Report_2022/src/Lab2-sysinfo-1.jpg)
+   ![](../Xv6_Lab_Report_2021/src/Lab2-sysinfo-1.jpg)
 6. 在进程中已经保存了当前进程的状态，因此我们可以直接遍历所有进程，判断它们的状态是否为 `UNUSED` 并进行计数。根据 `proc` 结构体的定义，访问进程状态时必须加锁。我们在 `kernel/proc.c` 中新增了一个名为 `nproc` 的函数，用于获取可用进程的数量，代码如下：
     ```c
     uint64
@@ -1280,7 +1280,7 @@ usertests starting
         return num;
     }
     ```
-    ![](../Xv6_Lab_Report_2022/src/Lab2-sysinfo-3.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab2-sysinfo-3.jpg)
 7. 在 `kernel/kalloc.c` 中添加一个 `free_mem` 函数，用于收集可用内存的数量。参考 `kernel/kalloc.c` 文件中的 `kalloc()` 和 `kfree()` 函数可以看出，内核通过 `kmem.freelist` 链表维护未使用的内存。链表的每个节点对应一个页表大小（`PGSIZE`）。分配内存时，从链表头部取走一个页表大小的内存；释放内存时，使用头插法将其插入到该链表。因此，计算未使用内存的字节数 `freemem` 只需遍历该链表，得到链表节点数，并与页表大小（4KB）相乘即可。
 
     ```c
@@ -1301,7 +1301,7 @@ usertests starting
     }
 
     ```
-    ![](../Xv6_Lab_Report_2022/src/Lab2-sysinfo-2.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab2-sysinfo-2.jpg)
 8. 在 `kernel/defs.h` 中添加上述两个新增函数的声明：
     ```c
     // kalloc.c
@@ -1335,7 +1335,7 @@ usertests starting
         return 0;
     }
     ```
-    ![](../Xv6_Lab_Report_2022/src/Lab2-sysinfo-4.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab2-sysinfo-4.jpg)
 10. 最后在 `user` 目录下添加一个 `sysinfo.c` 用户程序：
     ```c
     #include "kernel/param.h"
@@ -1358,7 +1358,7 @@ usertests starting
         exit(0);
     }
     ```
-    ![](../Xv6_Lab_Report_2022/src/Lab2-sysinfo-5.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab2-sysinfo-5.jpg)
 11. 在 `Makefile` 的 `UPROGS` 中添加：
     ```bash
     $U/_sysinfotest\
@@ -1378,11 +1378,11 @@ $ sysinfotest
 sysinfotest: start
 sysinfotest: OK
 ```
-![](../Xv6_Lab_Report_2022/src/Lab2-sysinfo-6.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab2-sysinfo-6.jpg)
 
 `./grade-lab-syscall sysinfo` 单项测试
 
-![](../Xv6_Lab_Report_2022/src/Lab2-sysinfo-7.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab2-sysinfo-7.jpg)
 
 #### 分析讨论
 
@@ -1435,7 +1435,7 @@ $ make clean
     struct usyscall *usyscall;
     ...
     ```
-    ![](../Xv6_Lab_Report_2022/src/Lab3-speed_up_system_calls-1.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab3-speed_up_system_calls-1.jpg)
 2. 配成功后，将当前进程的 `pid` 存入 `usyscall` 页面的开始处：
 
     ```c
@@ -1446,7 +1446,7 @@ $ make clean
     }
     p->usyscall->pid =  p->pid; 
     ```
-    ![](../Xv6_Lab_Report_2022/src/Lab3-speed_up_system_calls-2.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab3-speed_up_system_calls-2.jpg)
 3. `kalloc` 函数用于分配物理内存，但我们还需要完成从虚拟地址到物理地址的映射。这一过程需要在 `kernel/proc.c` 文件中的 `proc_pagetable()` 函数中利用 `mappages()` 函数来实现。`proc_pagetable()` 函数用于为进程创建一个用户页表。用户页表用于映射用户进程的虚拟地址到物理地址。在此过程中，还会映射一些特殊页，如 `trampoline` 和 `trapframe`。我们需要在这个函数中添加一个 `usyscall` 页面的映射。
 
     ```c
@@ -1456,7 +1456,7 @@ $ make clean
         return 0;
     }
     ```
-    ![](../Xv6_Lab_Report_2022/src/Lab3-speed_up_system_calls-3.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab3-speed_up_system_calls-3.jpg)
 4. 当前已完成了分配和映射工作，按照提示，我们还需要在必要的时候释放页面，比如终止进程时，我们需要在 `kernel/proc.c` 的 `freeproc()` 函数中，同理，将我们分配的 `usyscall` 和 `trapframe` 页面做相同处理，添加相关代码：
 
     ```c
@@ -1464,7 +1464,7 @@ $ make clean
         kfree((void*)p->usyscall);
     p->usyscall = 0;
     ```
-    ![](../Xv6_Lab_Report_2022/src/Lab3-speed_up_system_calls-4.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab3-speed_up_system_calls-4.jpg)
 5. 还需要在 `kernel/proc.c` 的 `proc_freepagetable()` 函数中释放我们之前建立的虚拟地址到物理地址的映射:
 
     ```c
@@ -1476,7 +1476,7 @@ $ make clean
         uvmfree(pagetable, sz);
     }
     ```
-    ![](../Xv6_Lab_Report_2022/src/Lab3-speed_up_system_calls-5.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab3-speed_up_system_calls-5.jpg)
 #### 实验结果
 
 ```bash
@@ -1484,11 +1484,11 @@ $ pgtbltest
 ugetpid_test starting
 ugetpid_test: OK
 ```
-![](../Xv6_Lab_Report_2022/src/Lab3-speed_up_system_calls-6.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab3-speed_up_system_calls-6.jpg)
 
 `./grade-lab-pgtbl ugetpid` 单项测试
 
-![](../Xv6_Lab_Report_2022/src/Lab3-speed_up_system_calls-7.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab3-speed_up_system_calls-7.jpg)
 
 #### 分析讨论
 
@@ -1556,18 +1556,18 @@ ugetpid_test: OK
         }
     }
     ```
-    ![](../Xv6_Lab_Report_2022/src/Lab3-print_page_table-1.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab3-print_page_table-1.jpg)
 2. 在 `kernel/defs.h` 文件中添加函数原型
-    ![](../Xv6_Lab_Report_2022/src/Lab3-print_page_table-2.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab3-print_page_table-2.jpg)
 4. 在 `kernel/exec.c` 的 `exec` 函数的 `return argc` 前插入 `if(p->pid==1) vmprint(p->pagetable)` 。这里考虑 `xv6` 的启动过程, 推测 `pid==1` 的进程为 `kernel/main.c` 中 `main()` 函数中调用的 `userinit()` 函数所建立的控制台进程。
-    ![](../Xv6_Lab_Report_2022/src/Lab3-print_page_table-3.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab3-print_page_table-3.jpg)
 5. 编译。
 
 #### 实验结果
 
-![](../Xv6_Lab_Report_2022/src/Lab3-print_page_table-5.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab3-print_page_table-5.jpg)
 
-![](../Xv6_Lab_Report_2022/src/Lab3-print_page_table-4.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab3-print_page_table-4.jpg)
 
 #### 分析讨论
 
@@ -1600,7 +1600,7 @@ ugetpid_test: OK
     #define PTE_U  (1L << 4)  // user can access
     #define PTE_A  (1L << 6)  // accessed
     ```
-    ![](../Xv6_Lab_Report_2022/src/Lab3-detect-1.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab3-detect-1.jpg)
 2. 实现 `sys_pgaccess` 系统调用
 实现 `sys_pgaccess`，其接收三个参数，分别为：1. 起始虚拟地址；2. 遍历页数目；3. 用户存储返回结果的地址。因为其是系统调用，故参数的传递需要通过 `argaddr`、`argint` 来完成。通过不断的 `walk` 来获取连续的 `PTE`，然后检查其 `PTE_A` 位，如果为 `1` 则记录在 `mask` 中，随后将 `PTE_A` 手动清 `0`。最后，通过 `copyout` 将结果拷贝给用户即可。在 `kernel/sysproc.c` 文件中，添加以下代码以实现 `sys_pgaccess` 系统调用：
     ```c
@@ -1628,12 +1628,12 @@ ugetpid_test: OK
         return 0;
     }
     ```
-    ![](../Xv6_Lab_Report_2022/src/Lab3-detect-2.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab3-detect-2.jpg)
 3. 内核启动与输出验证
 4. 编写并运行测试用例
 5. 验证测试结果
 
-![](../Xv6_Lab_Report_2022/src/Lab3-detect-2.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab3-detect-2.jpg)
 
 #### 实验结果
 
@@ -1646,7 +1646,7 @@ page table 0x0000000087f6e000
 0: pte 0x000000021fdac1f pa 0x0000000087f6b000
 ...
 ```
-![](../Xv6_Lab_Report_2022/src/Lab3-detect-3.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab3-detect-3.jpg)
 ```plaintext
 $ pgtbltest
 ugetpid_test starting
@@ -1655,9 +1655,9 @@ pgaccess_test starting
 pgaccess_test: OK
 pgtbltest: all tests succeeded
 ```
-![](../Xv6_Lab_Report_2022/src/Lab3-detect-4.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab3-detect-4.jpg)
 
-![](../Xv6_Lab_Report_2022/src/Lab3-detect-5.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab3-detect-5.jpg)
 
 #### 分析讨论
 
@@ -1693,7 +1693,7 @@ make clean
 
 1. 在xv6的命令行中输入运行`make fs.img` ，编译`user/call.c`程序，得到可读性比较强的
 `user/call.asm`文件。
-![](../Xv6_Lab_Report_2022/src/Lab4-RISC_V-1.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab4-RISC_V-1.jpg)
 
 2. 阅读 `call.asm `中的 `g` ， `f` ，和 `main` 函数。
 回答下列问题：
@@ -1713,7 +1713,7 @@ printf("%d %d\n", f(8)+1, 13);
 ```
 通过汇编代码可以看到参数的传递：
 
-![](../Xv6_Lab_Report_2022/src/Lab4-RISC_V-2.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab4-RISC_V-2.jpg)
 
 在这段代码中：
 
@@ -1739,11 +1739,11 @@ printf("%d %d\n", f(8)+1, 13);
 
 查看 `call.asm` 文件中的 `f` 和 `g` 函数可知，函数  `f` 调用函数 `g` ；函数 `g` 使传入的参数加 3 后返回。
 
-![](../Xv6_Lab_Report_2022/src/Lab4-RISC_V-3.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab4-RISC_V-3.jpg)
 
 此外，编译器会进行内联优化，即在编译时计算出可以预先计算的结果，而不是在运行时进行函数调用。在 `main` 函数中，`printf` 包含一个对 `f` 的调用，但在汇编代码中，这个调用被直接替换为 `f(8)+1` 的结果 `12`。
 
-![](../Xv6_Lab_Report_2022/src/Lab4-RISC_V-4.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab4-RISC_V-4.jpg)
 
 综上，在 `main` 函数中没有直接的函数调用指令，而是内联了 `f` 和 `g` 的计算结果。
 
@@ -1753,7 +1753,7 @@ printf("%d %d\n", f(8)+1, 13);
 
 > `printf` 函数位于哪个地址？
 
-![](../Xv6_Lab_Report_2022/src/Lab4-RISC_V-5.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab4-RISC_V-5.jpg)
 
 查阅得到其地址在 `0x630` 。
 
@@ -1763,7 +1763,7 @@ printf("%d %d\n", f(8)+1, 13);
 
 > 在 `main` 中 `printf` 的 `jalr` 之后的寄存器 `ra` 中有什么值？
 
-![](../Xv6_Lab_Report_2022/src/Lab4-RISC_V-6.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab4-RISC_V-6.jpg)
 
 `34: jalr 1536(ra) # 630 <printf>` 指令跳转到 `printf` 函数。
 
@@ -1798,8 +1798,8 @@ printf("H%x Wo%s", 57616, &i);
 
 这里有一个 [小端和大端存储的描述](https://www.webopedia.com/definitions/big-endian "小端和大端存储的描述") 和一个 [更异想天开的描述](http://www.networksorcery.com/enp/ien/ien137.txt "更异想天开的描述") 。
 
-![](../Xv6_Lab_Report_2022/src/Lab4-RISC_V-7.jpg)
-![](../Xv6_Lab_Report_2022/src/Lab4-RISC_V-8.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab4-RISC_V-7.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab4-RISC_V-8.jpg)
 
 输出为 `HE110 World`。
 
@@ -1823,7 +1823,7 @@ printf("x=%d y=%d", 3);
 2. 未定义行为：C 语言标准中规定，当格式字符串的占位符数量与提供的参数数量不匹配时，行为是未定义的。这意味着编译器不会对这种情况做出任何保证，程序可能会打印垃圾值，崩溃，甚至可能正确运行（但这是偶然的）。
 3. 栈内容未初始化：在调用 `printf` 时，函数会从栈中读取参数。由于没有提供第二个参数，`printf` 会读取一个未初始化的栈位置的值，导致打印出一个不可预测的值。
 
-![](../Xv6_Lab_Report_2022/src/Lab4-RISC_V-9.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab4-RISC_V-9.jpg)
 
 ### Backtrace
 
@@ -1834,33 +1834,33 @@ printf("x=%d y=%d", 3);
 #### 实验步骤
 
 1. 在文件 `kernel/riscv.h` 中添加内联函数 `r_fp()` 读取栈帧值。
-    ![](../Xv6_Lab_Report_2022/src/Lab4-backtrace-1.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab4-backtrace-1.jpg)
 2. 在 `kernel/printf.c` 文件中编写 `backtrace()` 函数以输出所有栈帧。函数的实现思路如下：
     - 通过调用 `r_fp()` 函数读取寄存器 `s0` 中的当前函数栈帧 `fp`。
     - 根据 `RISC-V` 的栈结构，`fp-8` 存放返回地址，`fp-16` 存放原栈帧。通过原栈帧可以得到上一级栈结构，依次类推，直到获取到最初的栈结构。
     - 需要考虑获取上一级栈帧的终止条件。`RISC-V` 的用户栈空间占一个页面，可以通过 `PGROUNDDOWN()` 和 `PGROUNDUP()` 计算得到一个地址所在页面的最高和最低地址。初始从寄存器 `s0` 读取到的栈帧 `fp` 是在用户栈空间中的地址，由此可以得到用户栈的页面最高和最低地址作为循环的终止条件。
-    ![](../Xv6_Lab_Report_2022/src/Lab4-backtrace-2.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab4-backtrace-2.jpg)
 3. 添加 `backtrace()` 函数原型到 `kernel/defs.h`。 
-    ![](../Xv6_Lab_Report_2022/src/Lab4-backtrace-3.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab4-backtrace-3.jpg)
 4. 在 `kernel/sysproc.c` 的 `sys_sleep()` 函数中添加对 `backtrace()` 的调用。
-    ![](../Xv6_Lab_Report_2022/src/Lab4-backtrace-4.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab4-backtrace-4.jpg)
 5. 在 `kernel/printf.c` 的 `panic()` 函数中添加对 `backtrace()` 的调用。
-    ![](../Xv6_Lab_Report_2022/src/Lab4-backtrace-5.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab4-backtrace-5.jpg)
 
 6. 运行与测试
 
 #### 实验结果
 
 1. 在 `xv6` 中运行 `bttest`, 输出 3 个栈帧的返回地址; 退出 `xv6` 后运行 `addr2line -e kernel/kernel 将 bttest` 的输出作为输入, 输出对应的调用栈函数, 如下图所示。
-![](../Xv6_Lab_Report_2022/src/Lab4-backtrace-6.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab4-backtrace-6.jpg)
 根据输出的源码行号找对应的源码, 发现就是 `backtrace()` 函数的所有调用栈的返回地址(函数调用完后的下一代码).
-![](../Xv6_Lab_Report_2022/src/Lab4-backtrace-7.jpg)
-![](../Xv6_Lab_Report_2022/src/Lab4-backtrace-8.jpg)
-![](../Xv6_Lab_Report_2022/src/Lab4-backtrace-9.jpg)
-![](../Xv6_Lab_Report_2022/src/Lab4-backtrace-10.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab4-backtrace-7.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab4-backtrace-8.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab4-backtrace-9.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab4-backtrace-10.jpg)
 
 2. 运行 `./grade-lab-traps backtrace` 测试输出。
-![](../Xv6_Lab_Report_2022/src/Lab4-backtrace-11.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab4-backtrace-11.jpg)
 
 #### 分析讨论
 
@@ -1893,29 +1893,29 @@ printf("x=%d y=%d", 3);
 int sigalarm(int ticks, void (*handler)());
 int sigreturn(void);
 ```
-![](../Xv6_Lab_Report_2022/src/Lab4-alarm-1.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab4-alarm-1.jpg)
 
 2. 在 `user/usys.pl` 脚本中添加两个系统调用的相应 `entry`, 在 `kernel/syscall.h` 和 `kernel/syscall.c` 添加相应声明.
 ```c
 entry("sigalarm");
 entry("sigreturn");
 ```
-![](../Xv6_Lab_Report_2022/src/Lab4-alarm-2.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab4-alarm-2.jpg)
 ```c
 #define SYS_sigalarm 22
 #define SYS_sigreturn 23
 ```
-![](../Xv6_Lab_Report_2022/src/Lab4-alarm-3.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab4-alarm-3.jpg)
 ```c
 extern uint64 sys_sigalarm(void);
 extern uint64 sys_sigreturn(void);
 ```
-![](../Xv6_Lab_Report_2022/src/Lab4-alarm-4.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab4-alarm-4.jpg)
 ```c
 [SYS_sigalarm]  sys_sigalarm,
 [SYS_sigreturn] sys_sigreturn,
 ```
-![](../Xv6_Lab_Report_2022/src/Lab4-alarm-5.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab4-alarm-5.jpg)
 
 3. 在 `kernel/proc.h` 中的 `struct proc` 结构体中添加记录时间间隔, 调用函数地址, 以及经过时钟数的字段
 ```c
@@ -1923,11 +1923,11 @@ int interval;
 uint64 handler;
 int passedticks;
 ```
-![](../Xv6_Lab_Report_2022/src/Lab4-alarm-6.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab4-alarm-6.jpg)
 
 4. 编写 `sys_sigalarm()` 函数, 将 `interval` 和 `handler` 的值存到当前进程的 `struct proc` 结构体的相应字段中.
 在这里在指导书的基础上又做了两点优化: 一方面限定了 `interval` 的值需要非负, 根据定义 `interval` 表示每次调用 `handler` 函数的周期, `0` 特指取消调用, 而负数在这里是没有意义的, 因此将其视为非法参数; 另一方面同时重置了过去的时钟数 `p->passedticks`, 此处考虑到可能中途会更新 `sigalarm()` 的调用参数, 这样之前记录的过去时钟数便失效了, 应该重新计数。
-![](../Xv6_Lab_Report_2022/src/Lab4-alarm-7.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab4-alarm-7.jpg)
 
 5. `kernel/proc.c` 的 `allocproc()` 函数负责分配并初始化进程, 此处对上述 `struct proc` 新增的三个字段进行初始化赋值。
 ```c
@@ -1939,14 +1939,14 @@ p->interval = 0;
 p->handler = 0;
 p->passedticks = 0;
 ```
-![](../Xv6_Lab_Report_2022/src/Lab4-alarm-8.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab4-alarm-8.jpg)
 
 6. 
     - 每当发生时钟中断时，`kernel/trap.c` 中的 `usertrap()` 函数会被调用。对于时钟中断，`which_dev` 变量的值为 `2`，因此可以单独处理时钟中断。根据指导书的要求，由于 `handler` 函数的地址可能为 `0`，主要通过 `interval == 0` 来判断是否终止定时调用函数。
     - 每次发生时钟中断时，将 `passedticks` 增加 `1`。当 `passedticks` 达到 `interval` 时，调用 `handler()` 函数，并将 `passedticks` 置零，以便下次调用定时函数。
     - 关键在于如何调用定时函数 `handler()`。需要注意的是，在 `usertrap()` 中，页表已经切换为内核页表（切换操作在 `uservec` 函数中完成），而 `handler` 是用户空间的函数虚拟地址，不能直接调用。实际上，这里并没有直接调用 `handler` 函数，而是将 `p->trapframe->epc` 设置为 `p->handler`，这样在返回到用户空间时，程序计数器指向 `handler` 定时函数的地址，从而实现了定时函数的执行。
 
-![](../Xv6_Lab_Report_2022/src/Lab4-alarm-9.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab4-alarm-9.jpg)
 
 7. 修改 `Makefile` 文件中的 `UPROGS` 部分, 添加对 `alarmtest.c` 的编译。
 
@@ -1964,7 +1964,7 @@ p->passedticks = 0;
     struct trapframe* trapframecopy;      // the copy of trapframe
     };
     ```
-    ![](../Xv6_Lab_Report_2022/src/Lab4-alarm-10.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab4-alarm-10.jpg)
 
 10. 在 `kernel/trap.c` 的 `usertrap()` 中覆盖 `p->trapframe->epc` 前做 `trapframe` 的副本。
 
@@ -1985,7 +1985,7 @@ p->passedticks = 0;
     // ...
     }
     ```
-    ![](../Xv6_Lab_Report_2022/src/Lab4-alarm-11.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab4-alarm-11.jpg)
 
 11. 在 `sys_sigreturn()` 中将副本恢复到原 `trapframe`。此处在拷贝副本前额外做了一个地址判断, 是防止用户程序在未调用 `sigalarm()` 便使用了该系统调用, 那么此时没有副本即 `trapframecopy` 是无效的, 应避免错误拷贝. 在拷贝后将 `trapframecopy` 置零, 表示当前没有副本。
     ```c
@@ -2001,11 +2001,11 @@ p->passedticks = 0;
         return p->trapframe->a0;	// 返回a0,避免被返回值覆盖
     }
     ```
-    ![](../Xv6_Lab_Report_2022/src/Lab4-alarm-12.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab4-alarm-12.jpg)
 
 12. 为了保证 `trapframecopy` 的一致性, 在初始进程 `kernel/proc.c` 的 `allocproc()` 中, 初始化 `p->trapframecopy` 为 0, 表明初始时无副本。
 
-![](../Xv6_Lab_Report_2022/src/Lab4-alarm-13.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab4-alarm-13.jpg)
 
 13. 根据指导书的要求，定时函数 `handler` 需要防止重入，即在其尚未返回时不能触发下一次调用。为此，需要将 `p->passedticks = 0`; 从原本的 `usertrap()` 移至 `sys_sigreturn()` 中。因为在 `usertrap()` 中重置 `passedticks` 后，后续的时钟中断会继续递增 `passedticks`，可能再次满足调用 `handler` 的条件。而将重置操作移至 `sys_sigreturn()` 之后，即在函数最后返回前才清零，按照系统调用的正确使用方法，`sigreturn()` 的结束应该标志着 `handler()` 的结束。这样，在 `handler()` 还未结束时，`passedticks` 会继续递增，从而不会满足调用 `handler` 的条件，自然就可以避免重入。上述代码已经过修改。
 
@@ -2014,11 +2014,11 @@ p->passedticks = 0;
 #### 实验结果
 
 1. 在 xv6 中执行 `alarmtest` 和 `usertests` 均通过。
-![](../Xv6_Lab_Report_2022/src/Lab4-alarm-14.jpg)
-![](../Xv6_Lab_Report_2022/src/Lab4-alarm-15.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab4-alarm-14.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab4-alarm-15.jpg)
 
 2. `./grade-lab-traps alarmtest` 单项测试通过。
-![](../Xv6_Lab_Report_2022/src/Lab4-alarm-16.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab4-alarm-16.jpg)
 
 #### 分析讨论
 
@@ -2161,9 +2161,9 @@ uvmcopy(pagetable_t old, pagetable_t new, uint64 sz)
 
     - 在这个过程中，如果出现了任何失败，需要立即设置 `p->killed` 为 `1` ，然后跳转到 `end` 处，退出并杀死进程。
     - 在申请新的物理内存并进行映射之前，需要使用 `uvmunmap` 函数将虚拟地址与旧的物理内存进行解绑。
-    ![](../Xv6_Lab_Report_2022/src/Lab5-4.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab5-4.jpg)
     上面代码中使用了 `pte = cow_walk(p->pagetable, PGROUNDDOWN(va))` 函数，是一个自定义的函数，在 `vm.c` 文件中进行定义。仿照 `walkaddr` 函数写一个函数用来检验虚拟地址是否是来自 `copy on write` 。注意其中添加了一个对 `PTE_RSW` 位的检查，这是关键。
-    ![](../Xv6_Lab_Report_2022/src/Lab5-5.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab5-5.jpg)
 
 5. 内存引用计数相关的步骤在第一步已经做了相关的定义，接下来是一些使用的地方。
 
@@ -2179,7 +2179,7 @@ uvmcopy(pagetable_t old, pagetable_t new, uint64 sz)
     }   
     ```
     在申请内存 `kalloc()` 函数，释放内存 `kfree()` 函数中，进行如下修改：
-    ![](../Xv6_Lab_Report_2022/src/Lab5-6.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab5-6.jpg)
     - `freerange` 函数中调用了 `kfree` ，这个函数在系统内存初始化的时候调用，而且是在没有 `kalloc` 的前提下调用的，因为我们修改了 `kfree` 函数的逻辑，所以 `freerange` 函数中要先将内存引用计数置1。
     ```c
     void
@@ -2195,7 +2195,7 @@ uvmcopy(pagetable_t old, pagetable_t new, uint64 sz)
     }
     ```
 6. 下面对 `copyout` 函数进行修改。这里就是将内核物理内存copy到用户物理内存前需要检查一下用户物理内存（dst）是不是COW页面，如果时则需要申请新的用户物理内存。这里只需要改动 `copyout` 而不需要改 `copyin` 是因为前者是内核拷贝到用户，是会对一个用户页产生写的操作，而后者是用户拷到内核，只是去读这个用户页的内容，COW页允许读。
-    ![](../Xv6_Lab_Report_2022/src/Lab5-7.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab5-7.jpg)
 
 7. 最后，一些函数需要在defs.h中进行声明。
 ```c
@@ -2209,11 +2209,11 @@ pte_t*          cow_walk(pagetable_t , uint64 );
 8. 编译并进行测试。
     
 #### 实验结果
-![](../Xv6_Lab_Report_2022/src/Lab5-1.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab5-1.jpg)
 
-![](../Xv6_Lab_Report_2022/src/Lab5-2.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab5-2.jpg)
 
-![](../Xv6_Lab_Report_2022/src/Lab5-3.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab5-3.jpg)
 
 #### 分析讨论
 
@@ -2268,7 +2268,7 @@ $ make clean
         struct context threadContext;       // 借鉴proc的context
     };
     ```
-    ![](../Xv6_Lab_Report_2022/src/Lab6-Uthread-1.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab6-Uthread-1.jpg)
 
 3. 修改 `thread_switch` 函数定义。
     ```c
@@ -2282,13 +2282,11 @@ $ make clean
     需要特别注意的是，传递给 thread_create() 函数的参数 func 必须记录下来，以便在线程运行时能够执行该函数。此外，线程有独立的栈结构，函数运行时需要在该线程的栈上进行，因此需要初始化线程的栈指针。
 
     在线程调度切换时，必须保存和恢复寄存器状态。这里分别对应的是 ra（返回地址寄存器）和 sp（栈指针寄存器）。在线程初始化时设置这些寄存器的值，确保在后续的调度切换过程中能正确保持线程状态。
-    ![](../Xv6_Lab_Report_2022/src/Lab6-Uthread-2.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab6-Uthread-2.jpg)
 
 5. 在 `thread_schedule()` 函数中添加代码。该函数负责用户多线程间的调度，通过函数主动调用进行线程切换。其主要任务是从当前线程在线程数组中的位置开始，寻找一个状态为 `RUNNABLE` 的线程进行运行。这与 `kernel/proc.c` 中的 `scheduler()` 函数非常相似。
 
     找到合适的线程后，需要进行线程切换，调用 `thread_switch()` 函数。根据 `user/thread.c` 中的外部声明以及指导书的要求，可以推断出该函数定义在 `user/uthread_switch.S` 中，并用汇编代码实现。其功能类似于 `kernel/swtch.S` 中的 `swtch()` 函数，负责在线程切换时保存和恢复寄存器状态。
-
-    ![](../Xv6_Lab_Report_2022/src/Lab6-Uthread-3.jpg)
 
 6. 最后，在 `user/uthread_switch.S` 中添加 `thread_switch` 的代码。正如上文所述，该函数的功能与 `kernel/swtch.S` 中的 `swtch` 函数一致。由于 `struct ctx` 与内核中的 `struct context` 结构体的成员相同，因此该函数可以直接复用 `kernel/swtch.S` 中的 `swtch` 代码。
 
@@ -2297,10 +2295,10 @@ $ make clean
 #### 实验结果
 
 1. 在 `xv6` 中运行 `uthread`:
-![](../Xv6_Lab_Report_2022/src/Lab6-Uthread-4.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab6-Uthread-3.jpg)
 
-2. `./grade-lab-thread uthread` 单项测试:
-![](../Xv6_Lab_Report_2022/src/Lab6-Uthread-5.jpg)
+1. `./grade-lab-thread uthread` 单项测试:
+    ![](../Xv6_Lab_Report_2021/src/Lab6-Uthread-4.jpg)
 
 #### 分析讨论
 
@@ -2324,11 +2322,11 @@ $ make clean
 1. 使用如下命令构建 `ph` 程序, 该程序包含一个线程不安全的哈希表。
 2. 运行 `./ph 1` 即使用单线程运行该哈希表，输出如下，其 `0` 个键丢失:
    
-![](../Xv6_Lab_Report_2022/src/Lab6-using_threads-1.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab6-using_threads-1.jpg)
 
 3. 运行 `./ph 2` 即使用两个线程运行该哈希表，输出如下，可以看到其 `put` 速度近乎先前 2 倍，但是有 16423 个键丢失，也说明了该哈希表非线程安全。
 
-![](../Xv6_Lab_Report_2022/src/Lab6-using_threads-2.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab6-using_threads-2.jpg)
 
 4. 定义互斥锁数组。
     根据指导书可知，此处主要通过加互斥锁来解决线程不安全的问题。此处没有选择使用一个互斥锁，这样会导致访问整个哈希表都是串行的。而考虑到对该哈希表，实际上只有对同一 `bucket` 操作时才可能造成数据的丢失，不同 `bucket` 之间是互不影响的，因此此处是构建了一个互斥锁数组，每个 `bucket` 对应一个互斥锁。在 `ph.c` 中增加：
@@ -2336,13 +2334,13 @@ $ make clean
     pthread_mutex_t locks[NBUCKET]; // lab7-2
     ```
 5. 在 `main()` 函数中对所有互斥锁进行初始化。
-![](../Xv6_Lab_Report_2022/src/Lab6-using_threads-3.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab6-using_threads-3.jpg)
 
 6. 在 `put()` 中加锁。
     由于线程安全问题是由于对 `bucket` 中的链表操作时产生的，因此要在对链表操作的前后加锁。
     但实际上，对于加锁的临界区可以缩小至 `insert()` 函数。 原因是 `insert()` 函数采取头插法插入 `entry`，在函数的最后才使用 `*p=e` 修改 `bucket` 链表头 `table[i]` 的值，也就是说，在前面操作的同时，并不会对 `bucket` 链表进行修改, 因此可以缩小临界区的方法。
     不需要在 `get()` 中加锁。`get()` 函数主要是遍历 `bucket` 链表找寻对应的 `entry`，并不会对 `bucket` 链表进行修改，实际上只是读操作，因此无需加锁。
-![](../Xv6_Lab_Report_2022/src/Lab6-using_threads-4.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab6-using_threads-4.jpg)
 
 7. 增大 `NBUCKET`。增大 `NBUCKET` 即增加哈希表的 `bucket` 数，从而一定程度上会减少两个同时运行的线程 `put()` 时对同一个 `bucket` 进行操作的概率，自然也就减少了锁的争用，能够一定程度上挺高并发性能。此处选择 `NBUCKET=7`。
    ```c
@@ -2354,10 +2352,10 @@ $ make clean
 #### 实验结果
 
 1. `./ph 2` 测试。
-![](../Xv6_Lab_Report_2022/src/Lab6-using_threads-5.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab6-using_threads-5.jpg)
 
 1. `./grade-lab-thread ph_fast` 单项测试。
-![](../Xv6_Lab_Report_2022/src/Lab6-using_threads-6.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab6-using_threads-6.jpg)
 
 #### 分析讨论
 
@@ -2389,7 +2387,7 @@ $ make clean
     $ make barrier
     ```
 2. 运行 `./barrier 2` 即使用两个线程运行该程序，输出如下，即最初版本不满足该性质，会致使运行失败。
-![](../Xv6_Lab_Report_2022/src/Lab6-Barrier-1.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab6-Barrier-1.jpg)
 
 3. 根据上述思路，在 `barrier()` 函数中添加以下代码。需要注意的是，在调用 `pthread_cond_broadcast()` 唤醒其他线程之前，必须先设置变量 `bstate.round` 和 `bstate.nthread`，否则在其他线程进入下一轮循环时，这两个字段的值可能尚未更新。
     ```c
@@ -2413,9 +2411,9 @@ $ make clean
 
 #### 实验结果
 
-![](../Xv6_Lab_Report_2022/src/Lab6-Barrier-2.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab6-Barrier-2.jpg)
 
-![](../Xv6_Lab_Report_2022/src/Lab6-Barrier-3.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab6-Barrier-3.jpg)
 
 #### 分析讨论
 
@@ -2451,7 +2449,7 @@ $ make clean
     8. 使用 `__sync_synchronize()` 设置内存屏障，确保描述符更新完成后再更新尾指针。
     9. 更新发送尾指针 `regs[E1000_TDT]`。
     10. 释放锁，返回成功。
-    ![](../Xv6_Lab_Report_2022/src/Lab7-1.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab7-1.jpg)
 
 2. 为了实现 `kernel/e1000.c` 中的 `e1000_recv()` 函数以接收数据到内核，需要处理接收队列 `rx_ring` 和其缓冲区 `rx_mbufs`。以下是具体实现步骤：
 
@@ -2464,20 +2462,20 @@ $ make clean
     7. 继续检查下一个描述符，直到当前描述符的 `DD` 标志位未被设置，说明数据尚未被硬件处理完毕。
     8. 更新接收尾指针 `regs[E1000_RDT]` 指向最后一个已处理的描述符。
     9. 不需要加锁，因为接收函数仅在中断处理函数 `e1000_intr()` 中调用，不会出现并发问题。发送和接收数据结构独立，不会共享资源。以下是 `e1000_recv()` 的实现：
-    ![](../Xv6_Lab_Report_2022/src/Lab7-2.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab7-2.jpg)
 
 3. 编译并进行测试。
 
 #### 实验结果
 1. 
     1. 在 xv6 目录下执行 make server 启动服务端。
-    ![](../Xv6_Lab_Report_2022/src/Lab7-3.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab7-3.jpg)
     2. 然后在另一个终端执行 `make qemu` 启动 `xv6`, 然后执行 `nettests` 命令进行测试：
-    ![](../Xv6_Lab_Report_2022/src/Lab7-4.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab7-4.jpg)
     3. 然后在终端执行 `tcpdump -XXnr packets.pcap`, 可以查看捕获的报文:
-    ![](../Xv6_Lab_Report_2022/src/Lab7-5.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab7-5.jpg)
 2. `make grade` 测试
-![](../Xv6_Lab_Report_2022/src/Lab7-6.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab7-6.jpg)
 
 #### 分析讨论
 
@@ -2511,15 +2509,15 @@ $ make clean
 #### 实验步骤
 
 1. 在 `xv6` 中运行 `kalloctest`, 输出如下：
-![](../Xv6_Lab_Report_2022/src/Lab8-memory_allocator-1.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab8-memory_allocator-1.jpg)
 
-可以看出，`test1` 测试未通过。根据实验中 `struct spinlock` 的字段和相关代码分析，可以得知 `kmem` 锁的争用情况：`acquire()` 函数被调用了 433016 次，自旋尝试获取锁的次数为 179708 次。此外，`kmem` 锁也是争用最严重的五个锁之一。
+    可以看出，`test1` 测试未通过。根据实验中 `struct spinlock` 的字段和相关代码分析，可以得知 `kmem` 锁的争用情况：`acquire()` 函数被调用了 433016 次，自旋尝试获取锁的次数为 179708 次。此外，`kmem` 锁也是争用最严重的五个锁之一。
 
 2. 构造内存页 kmems 数组.
 根据指导书要求，此处每个 CPU 需要有一个空闲内存页链表以及相应的锁，即将原本在 kernel/kalloc.c 中定义的 kmem 结构体替换为 kmems 数组，数组的大小即为 CPU 的核心数 NCPU。
 此处为 kmems 结构体额外添加了一个 lockname 的字段，用于记录每个锁的名称。
 
-![](../Xv6_Lab_Report_2022/src/Lab8-memory_allocator-2.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab8-memory_allocator-2.jpg)
 
 3. 修改初始化 `kinit()` 函数。
 
@@ -2587,15 +2585,15 @@ $ make clean
 #### 实验结果
 1. 在 `xv6` 中执行 `kalloctest`, 输出如下，可以看到对于每个 `CPU` 的物理页锁的争用情况相比之前有明显下降，`acquire()` 整体次数大幅减少，最多被调用了 185965 次，比修改前次数减少了一半多，且自旋尝试获取锁的次数均为 0 次。同时 `kmems` 中的锁也不再是最具争用性的 5 个锁。测试 `test1` 和 `test2` 也均通过。
 
-    ![](../Xv6_Lab_Report_2022/src/Lab8-memory_allocator-3.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab8-memory_allocator-3.jpg)
 
 2. 在 `xv6` 中执行 `usertests sbrkmuch` 进行测试：
 
-    ![](../Xv6_Lab_Report_2022/src/Lab8-memory_allocator-4.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab8-memory_allocator-4.jpg)
 
 3. `./grade-lab-lock kalloctest` 单项测试：
 
-    ![](../Xv6_Lab_Report_2022/src/Lab8-memory_allocator-5.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab8-memory_allocator-5.jpg)
 
 #### 分析讨论
 1. 锁争用的显著减少：实验结果显示，通过为每个CPU设置独立的锁与自由列表，锁的争用情况有了明显改善。特别是在 `kalloctest` 测试中，`acquire()` 函数的调用次数大幅减少，自旋尝试获取锁的次数也降为零，这表明大部分内存分配操作在无锁竞争的情况下顺利进行。这一改进使得系统在高并发场景下能够更高效地管理内存分配，避免了不必要的等待和资源浪费。
@@ -2616,19 +2614,19 @@ $ make clean
 
 1. 在 xv6 中运行 `bcachetest`，输出如下：
 
-    ![](../Xv6_Lab_Report_2022/src/Lab8-buffer_cache-1.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab8-buffer_cache-1.jpg)
 
 2. 对 `kernel/buf.h` 中的 `buf` 结构体进行修改。
     
     由于将缓冲区管理从双向链表改为哈希表，在哈希表的 `bucket` 中使用了单向链表，因此不再需要 `prev` 字段。此外，为了支持基于时间戳的 `LRU` 算法，添加了 `timestamp` 字段，用于记录缓存块的最后使用时间。
 
-    ![](../Xv6_Lab_Report_2022/src/Lab8-buffer_cache-2.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab8-buffer_cache-2.jpg)
 
 3. 修改 `kernel/bio.c` 中的 `bcache` 结构体。
     
     根据上文思路，此处添加了 `size` 字段，用于记录已经分配到哈希表的缓存块 `struct buf` 的数量；添加了 `buckets[NBUCKET]` 数组，作为哈希表的 `bucket` 数组，其中 `NBUCKET` 为 `bucket` 的数目，根据指导书此处设置为 `13`；添加 `locks[NBUCKET]` 字段，用于作为每个 `bucket` 对应的锁；添加了 `hashlock` 字段，作为哈希表的全局锁，用于对哈希表整体加锁。
 
-    ![](../Xv6_Lab_Report_2022/src/Lab8-buffer_cache-3.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab8-buffer_cache-3.jpg)
 
 4. 修改 `kernel/bio.c` 中的 `binit()` 函数。
     
@@ -2655,10 +2653,10 @@ $ make clean
 #### 实验结果
 
 1. `bcachetest` 测试
-![](../Xv6_Lab_Report_2022/src/Lab8-buffer_cache-4.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab8-buffer_cache-4.jpg)
 
 2. `./grade-lab-lock bcachetest` 测试
-![](../Xv6_Lab_Report_2022/src/Lab8-buffer_cache-5.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab8-buffer_cache-5.jpg)
 
 #### 分析讨论
 
@@ -2703,11 +2701,11 @@ $ make clean
 #### 实验步骤
 
 1. 修改 `kernel/fs.h` 中的直接块号的宏定义 `NDIRECT` 为 11。根据实验要求，`inode` 中原本 12 个直接块号被修改为 了 11 个。
-![](../Xv6_Lab_Report_2022/src/Lab9-large_files-1.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab9-large_files-1.jpg)
 
 2. 修改 `inode` 相关结构体的块号数组. 具体包括 `kernel/fs.h` 中的磁盘 `inode` 结构体 `struct dinode` 的 `addrs` 字段；和 `kernel/file.h` 中的内存 `inode` 结构体 `struct` inode 的 `addrs` 字段。将二者数组大小设置为 `NDIRECT+2`，因为实际 `inode` 的块号总数没有改变，但 `NDIRECT` 减少了 1。
-![](../Xv6_Lab_Report_2022/src/Lab9-large_files-2.jpg)
-![](../Xv6_Lab_Report_2022/src/Lab9-large_files-3.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab9-large_files-2.jpg)
+![](../Xv6_Lab_Report_2021/src/Lab9-large_files-3.jpg)
 
 3. 在 `kernel/fs.h` 中添加宏定义 `NDOUBLYINDIRECT`，表示二级间接块号的总数，类比 `NINDIRECT`。由于是二级，因此能够表示的块号应该为一级间接块号 `NINDIRECT` 的平方。
 
@@ -2730,15 +2728,15 @@ $ make clean
 
 1. 在 `xv6` 中执行 `bigfile`
 
-    ![](../Xv6_Lab_Report_2022/src/Lab9-large_files-4.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab9-large_files-4.jpg)
 
 2. 在 `xv6` 中执行 `usertests`
 
-    ![](../Xv6_Lab_Report_2022/src/Lab9-large_files-5.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab9-large_files-5.jpg)
 
 3. `./grade-lab-fs bigfile` 单项测试
 
-    ![](../Xv6_Lab_Report_2022/src/Lab9-large_files-6.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab9-large_files-6.jpg)
 
 #### 分析讨论
 
@@ -2817,7 +2815,7 @@ int symlink(char *target, char *path);
     
     为了解决这两个问题，在 `kernel/fs.h` 中定义了 `NSYMLINK` 常量，用于表示符号链接的最大递归深度。当符号链接的深度超过此限制时，系统将停止跟踪并返回错误。
     
-    ![](../Xv6_Lab_Report_2022/src/Lab9-symbolic_links-1.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab9-symbolic_links-1.jpg)
 
 6. 对于成环的检测，这里采用了最简单的算法：创建一个大小为 `NSYMLINK` 的数组 `inums[]`，用于记录每次跟踪到的文件的 `inode` 编号。每次跟踪到目标文件的 `inode` 后，将其 `inode` 编号与 `inums` 数组中的记录进行比较，若发现重复，则证明符号链接成环。
 
@@ -2828,7 +2826,7 @@ int symlink(char *target, char *path);
     关于加锁和释放锁的规则，需要特别注意。在 `sys_open()` 函数中，当通过 `create()` 或 `namei()` 获取当前文件的 `inode` 后，系统会持有该 `inode` 的锁，直到函数结束时才会通过 iunlock() 释放锁。如果函数执行成功，并且未使用 `iput()` 释放 `inode` 的引用计数 (`ref`)，意味着该 `inode `在接下来的操作（如 `sys_close()` 调用之前）仍然处于活跃状态，不应减少引用计数。
 
     对于符号链接，由于最终需要打开的是链接的目标文件，因此必须释放当前 `inode` 的锁，并获取目标 `inode` 的锁。在处理符号链接时，需要读取 `ip->type` 字段，因此在进入 `follow_symlink()` 函数时，应保持对当前 `inode` 的锁。当使用 `readi()` 读取符号链接中记录的目标文件路径后，当前符号链接的 `inode` 不再需要时，便可以使用 `iunlockput()` 释放锁和 `inode`。随后，当判断目标文件类型不为符号链接时，再对其进行加锁。这样，当 `follow_symlink()` 函数正确返回时，依然持有目标文件 `inode` 的锁，保证函数调用前后的一致性。
-    ![](../Xv6_Lab_Report_2022/src/Lab9-symbolic_links-2.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab9-symbolic_links-2.jpg)
 
 7. 最后在 `Makefile` 中添加对测试文件 `symlinktest.c` 的编译。
 
@@ -2838,15 +2836,15 @@ int symlink(char *target, char *path);
 
 1. 在 `xv6` 中执行 `symlinktest` 测试
 
-    ![](../Xv6_Lab_Report_2022/src/Lab9-symbolic_links-3.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab9-symbolic_links-3.jpg)
 
 2. 在 `xv6` 中执行 `usertests` 测试
 
-    ![](../Xv6_Lab_Report_2022/src/Lab9-symbolic_links-4.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab9-symbolic_links-4.jpg)
 
 3. `./grade-lab-fs symlinktest` 单项测试
 
-    ![](../Xv6_Lab_Report_2022/src/Lab9-symbolic_links-5.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab9-symbolic_links-5.jpg)
 
 #### 分析讨论
 
@@ -2933,10 +2931,10 @@ struct VMA{
 ```
 
 4. 在进程初始化函数（`proc.c` 中的 `allocproc` 函数）中增加对 `vma_pool` 的初始化。
-    ![](../Xv6_Lab_Report_2022/src/Lab10-1.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab10-1.jpg)
 5. 实现在 `vma_pool` 中分配和释放 `VMA` 的逻辑（`proc.c`），所谓的“分配”其实也就是在 `vma` 数组中寻找一个未使用的位置。将以上函数声明写到 `defs.h` 中。
-    ![](../Xv6_Lab_Report_2022/src/Lab10-2.jpg)
-    ![](../Xv6_Lab_Report_2022/src/Lab10-3.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab10-2.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab10-3.jpg)
 
 6. 实现 `sys_mmap()`。
 
@@ -2967,23 +2965,23 @@ struct VMA{
     2. 在 `usertrap` 中处理页面错误：当页面错误发生时，`usertrap` 函数负责捕获并处理这个异常。我们需要在这个函数中添加页面错误的处理逻辑，以便在发生 `mmap` 相关的页面错误时为该虚拟地址分配实际的物理内存。
 
     3. 因为我们实现了 `COW`，也就是 `mmap` 的内存是 `lazy allocation` 的，这导致了虚拟内存并不一定有对应的物理内存，所以需要修改一下 `vm.c` 中的 `uvmcopy` 和 `uvmunmap`。
-    ![](../Xv6_Lab_Report_2022/src/Lab10-4.jpg)
-    ![](../Xv6_Lab_Report_2022/src/Lab10-5.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab10-4.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab10-5.jpg)
 
 9. 修改 `exit` 和 `fork`
-    ![](../Xv6_Lab_Report_2022/src/Lab10-6.jpg)
-    ![](../Xv6_Lab_Report_2022/src/Lab10-7.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab10-6.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab10-7.jpg)
 
 
 #### 实验结果
 
 1. `xv6` 的 `mmaptest` 测试
 
-    ![](../Xv6_Lab_Report_2022/src/Lab10-8.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab10-8.jpg)
 
 2. `./grade-lab-mmap mmap` 单项测试
 
-    ![](../Xv6_Lab_Report_2022/src/Lab10-9.jpg)
+    ![](../Xv6_Lab_Report_2021/src/Lab10-9.jpg)
 
 #### 分析讨论
 
